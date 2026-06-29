@@ -45,6 +45,17 @@ Open `reports/latest/report.en.html` after the run. Generated Splunk queries and
 machine-readable evidence are written to `artifacts/`, which is intentionally
 ignored by Git.
 
+## How to review this project
+
+1. Start with `rules/manifest.json` and the five Sigma files in `rules/`.
+2. Inspect `tests/fixtures/scenarios.json` to see the positive, negative,
+   boundary and tuning cases.
+3. Run `uv run authlab all` to rebuild validation, SPL conversion and reports.
+4. Open `reports/latest/report.en.html` for the portfolio-ready validation
+   matrix.
+5. Read `docs/TUNING_GUIDE.md` to see how false positives are handled without
+   hiding the detection behavior.
+
 ## Commands
 
 ```text

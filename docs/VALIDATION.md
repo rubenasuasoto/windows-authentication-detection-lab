@@ -28,3 +28,20 @@ natively but does not currently convert `temporal_ordered`. For AUTH-003 and
 AUTH-005 the lab emits separately marked, reviewed compatibility SPL based on
 the same fields and time windows. These queries are evidence for review, not a
 claim of production deployment.
+
+## Splunk conversion outputs
+
+Running `uv run authlab convert --backend splunk` writes reviewable queries to
+`artifacts/splunk/`:
+
+| Rule | Output | Mode |
+|---|---|---|
+| AUTH-001 | `auth_001_failed_logon_burst.spl` | native |
+| AUTH-002 | `auth_002_multiple_accounts.spl` | native |
+| AUTH-003 | `auth_003_success_after_failures.spl` | reviewed compatibility |
+| AUTH-004 | `auth_004_account_lockout_burst.spl` | native |
+| AUTH-005 | `auth_005_privileged_remote_logon.spl` | reviewed compatibility |
+
+The compatibility queries exist because the installed pySigma Splunk backend
+does not natively emit `temporal_ordered` correlations. They are intentionally
+visible in the report so an analyst can review them before any SIEM test.

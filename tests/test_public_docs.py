@@ -80,6 +80,25 @@ class PublicDocumentationTests(unittest.TestCase):
         self.assertIn("Presentación", text)
         self.assertIn("docs/PORTFOLIO_PRESENTATION.md", text)
 
+    def test_readmes_explain_how_to_review_the_project(self) -> None:
+        english = (ROOT / "README.md").read_text(encoding="utf-8")
+        spanish = (ROOT / "README.es.md").read_text(encoding="utf-8")
+
+        self.assertIn("How to review this project", english)
+        self.assertIn("Cómo revisar este proyecto", spanish)
+        for expected in ("rules/manifest.json", "tests/fixtures/scenarios.json", "authlab all"):
+            with self.subTest(expected=expected):
+                self.assertIn(expected, english)
+                self.assertIn(expected, spanish)
+
+    def test_validation_doc_lists_splunk_outputs(self) -> None:
+        text = (ROOT / "docs" / "VALIDATION.md").read_text(encoding="utf-8")
+
+        self.assertIn("Splunk conversion outputs", text)
+        self.assertIn("auth_003_success_after_failures.spl", text)
+        self.assertIn("auth_005_privileged_remote_logon.spl", text)
+        self.assertIn("reviewed compatibility", text)
+
 
 if __name__ == "__main__":
     unittest.main()

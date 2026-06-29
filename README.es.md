@@ -33,6 +33,17 @@ El resultado visual se genera en `reports/latest/report.es.html`. Las consultas
 Splunk y evidencias de ejecución se guardan en `artifacts/`, fuera del control de
 versiones.
 
+## Cómo revisar este proyecto
+
+1. Empieza por `rules/manifest.json` y las cinco reglas Sigma de `rules/`.
+2. Revisa `tests/fixtures/scenarios.json` para ver casos positivos, negativos,
+   de umbral y de tuning.
+3. Ejecuta `uv run authlab all` para regenerar validación, conversión SPL e
+   informes.
+4. Abre `reports/latest/report.es.html` para ver la matriz de validación.
+5. Lee `docs/TUNING_GUIDE.md` para comprobar cómo se tratan falsos positivos
+   sin ocultar el comportamiento detectado.
+
 ## Comandos
 
 ```text

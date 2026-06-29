@@ -1,6 +1,7 @@
 import csv
 import unittest
 
+from authlab.convert import convert_rules
 from authlab.paths import REPORTS_DIR
 from authlab.report import build_reports
 from authlab.validation import run_validation
@@ -10,17 +11,7 @@ class ReportTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         run_validation()
-        # Conversion is exercised by the integration command and CI. A minimal
-        # deterministic conversion summary is enough to unit-test rendering.
-        from authlab.paths import ARTIFACTS_DIR
-
-        (ARTIFACTS_DIR / "conversion.json").write_text(
-            "[" + ",".join(
-                f'{{"rule":"auth_{index:03d}.yml","backend":"splunk","ok":true,"output":"artifacts/splunk/auth_{index:03d}.spl","message":"converted"}}'
-                for index in range(1, 6)
-            ) + "]\n",
-            encoding="utf-8",
-        )
+        convert_rules("splunk")
         build_reports()
 
     def test_bilingual_reports_are_generated(self) -> None:
@@ -39,7 +30,13 @@ class ReportTests(unittest.TestCase):
         self.assertNotIn("<script", report.lower())
         self.assertNotIn("https://", report.lower())
 
+    def test_report_shows_reviewed_compatibility_queries(self) -> None:
+        report = (REPORTS_DIR / "report.en.md").read_text(encoding="utf-8")
+        self.assertIn("auth_003_success_after_failures.yml**: compatibility", report)
+        self.assertIn("auth_005_privileged_remote_logon.yml**: compatibility", report)
+        html = (REPORTS_DIR / "report.en.html").read_text(encoding="utf-8")
+        self.assertIn("2 correlations use reviewed compatibility SPL", html)
+
 
 if __name__ == "__main__":
     unittest.main()
-

@@ -45,11 +45,11 @@ Laboratorio defensivo con eventos sintéticos. Este informe no acredita rendimie
 
 ## Compatibilidad del backend
 
-- **auth_001.yml**: native
-- **auth_002.yml**: native
-- **auth_003.yml**: native
-- **auth_004.yml**: native
-- **auth_005.yml**: native
+- **auth_001_failed_logon_burst.yml**: native
+- **auth_002_multiple_accounts.yml**: native
+- **auth_003_success_after_failures.yml**: compatibility
+- **auth_004_account_lockout_burst.yml**: native
+- **auth_005_privileged_remote_logon.yml**: compatibility
 
 ## Notas de ajuste
 
