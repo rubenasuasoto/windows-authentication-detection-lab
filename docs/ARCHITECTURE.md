@@ -11,10 +11,10 @@ reports/latest/    Public, reproducible portfolio report
 ```
 
 `pySigma` parses the Sigma documents and `sigma-cli` performs backend
-conversion. The local oracle evaluates only the documented synthetic fixture
-contract. It deliberately does not claim full Sigma or SIEM semantics.
+conversion through the explicit `splunk_windows` processing pipeline. The
+local oracle evaluates only the documented synthetic fixture contract. It
+deliberately does not claim full Sigma or SIEM semantics.
 
 The report consumes machine-readable validation results. This keeps the
 portfolio narrative traceable to repeatable tests instead of manually written
 success claims.
-

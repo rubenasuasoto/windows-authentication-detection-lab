@@ -1,0 +1,218 @@
+{
+  "schema_version": 1,
+  "notice": "Synthetic lab events only. Names and RFC 5737 addresses are fictional.",
+  "cases": [
+    {
+      "case_id": "AUTH-001-POS",
+      "rule_id": "AUTH-001",
+      "category": "positive",
+      "expected_alert": true,
+      "note": "Five failures from one source in four minutes.",
+      "events": [
+        {"Timestamp":"2026-01-15T09:00:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T09:01:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T09:02:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T09:03:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T09:04:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"}
+      ]
+    },
+    {
+      "case_id": "AUTH-001-NEG",
+      "rule_id": "AUTH-001",
+      "category": "negative",
+      "expected_alert": false,
+      "note": "Failures are split across independent sources.",
+      "events": [
+        {"Timestamp":"2026-01-15T09:00:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.11","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T09:01:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.12","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T09:02:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.13","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T09:03:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.14","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T09:04:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.15","Computer":"LAB-DC-01"}
+      ]
+    },
+    {
+      "case_id": "AUTH-001-BOUNDARY",
+      "rule_id": "AUTH-001",
+      "category": "boundary",
+      "expected_alert": false,
+      "note": "Four failures remain immediately below the threshold.",
+      "events": [
+        {"Timestamp":"2026-01-15T09:00:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T09:01:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T09:02:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T09:03:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"}
+      ]
+    },
+    {
+      "case_id": "AUTH-002-POS",
+      "rule_id": "AUTH-002",
+      "category": "positive",
+      "expected_alert": true,
+      "note": "One source reaches four distinct fictional users.",
+      "events": [
+        {"Timestamp":"2026-01-15T10:00:00Z","EventID":4625,"TargetUserName":"user01","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T10:02:00Z","EventID":4625,"TargetUserName":"user02","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T10:04:00Z","EventID":4625,"TargetUserName":"user03","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T10:06:00Z","EventID":4625,"TargetUserName":"user04","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"}
+      ]
+    },
+    {
+      "case_id": "AUTH-002-NEG",
+      "rule_id": "AUTH-002",
+      "category": "negative",
+      "expected_alert": false,
+      "note": "Repeated failures affect only one account.",
+      "events": [
+        {"Timestamp":"2026-01-15T10:00:00Z","EventID":4625,"TargetUserName":"user01","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T10:02:00Z","EventID":4625,"TargetUserName":"user01","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T10:04:00Z","EventID":4625,"TargetUserName":"user01","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T10:06:00Z","EventID":4625,"TargetUserName":"user01","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"}
+      ]
+    },
+    {
+      "case_id": "AUTH-002-BOUNDARY",
+      "rule_id": "AUTH-002",
+      "category": "boundary",
+      "expected_alert": false,
+      "note": "Three distinct users remain below the threshold.",
+      "events": [
+        {"Timestamp":"2026-01-15T10:00:00Z","EventID":4625,"TargetUserName":"user01","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T10:03:00Z","EventID":4625,"TargetUserName":"user02","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T10:06:00Z","EventID":4625,"TargetUserName":"user03","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"}
+      ]
+    },
+    {
+      "case_id": "AUTH-003-POS",
+      "rule_id": "AUTH-003",
+      "category": "positive",
+      "expected_alert": true,
+      "note": "Three failures are followed by success for the same identity and source.",
+      "events": [
+        {"Timestamp":"2026-01-15T11:00:00Z","EventID":4625,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01"},
+        {"Timestamp":"2026-01-15T11:02:00Z","EventID":4625,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01"},
+        {"Timestamp":"2026-01-15T11:04:00Z","EventID":4625,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01"},
+        {"Timestamp":"2026-01-15T11:06:00Z","EventID":4624,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01","LogonType":3,"TargetLogonId":"0x510"}
+      ]
+    },
+    {
+      "case_id": "AUTH-003-NEG",
+      "rule_id": "AUTH-003",
+      "category": "negative",
+      "expected_alert": false,
+      "note": "The successful logon comes from a different source.",
+      "events": [
+        {"Timestamp":"2026-01-15T11:00:00Z","EventID":4625,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01"},
+        {"Timestamp":"2026-01-15T11:02:00Z","EventID":4625,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01"},
+        {"Timestamp":"2026-01-15T11:04:00Z","EventID":4625,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01"},
+        {"Timestamp":"2026-01-15T11:06:00Z","EventID":4624,"TargetUserName":"user05","IpAddress":"192.0.2.31","Computer":"LAB-WS-01","LogonType":3,"TargetLogonId":"0x511"}
+      ]
+    },
+    {
+      "case_id": "AUTH-003-BOUNDARY",
+      "rule_id": "AUTH-003",
+      "category": "boundary",
+      "expected_alert": false,
+      "note": "Two failures before success remain below the threshold.",
+      "events": [
+        {"Timestamp":"2026-01-15T11:00:00Z","EventID":4625,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01"},
+        {"Timestamp":"2026-01-15T11:03:00Z","EventID":4625,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01"},
+        {"Timestamp":"2026-01-15T11:06:00Z","EventID":4624,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01","LogonType":3,"TargetLogonId":"0x512"}
+      ]
+    },
+    {
+      "case_id": "AUTH-003-TUNE",
+      "rule_id": "AUTH-003",
+      "category": "false_positive",
+      "expected_alert": true,
+      "disposition": "tune",
+      "note": "A fictional user succeeds after mistakes; preserve the alert and tune with environment context.",
+      "events": [
+        {"Timestamp":"2026-01-15T11:20:00Z","EventID":4625,"TargetUserName":"trainee01","IpAddress":"192.0.2.32","Computer":"LAB-WS-02"},
+        {"Timestamp":"2026-01-15T11:21:00Z","EventID":4625,"TargetUserName":"trainee01","IpAddress":"192.0.2.32","Computer":"LAB-WS-02"},
+        {"Timestamp":"2026-01-15T11:22:00Z","EventID":4625,"TargetUserName":"trainee01","IpAddress":"192.0.2.32","Computer":"LAB-WS-02"},
+        {"Timestamp":"2026-01-15T11:23:00Z","EventID":4624,"TargetUserName":"trainee01","IpAddress":"192.0.2.32","Computer":"LAB-WS-02","LogonType":2,"TargetLogonId":"0x513"}
+      ]
+    },
+    {
+      "case_id": "AUTH-004-POS",
+      "rule_id": "AUTH-004",
+      "category": "positive",
+      "expected_alert": true,
+      "note": "Three user account lockouts share one caller.",
+      "events": [
+        {"Timestamp":"2026-01-15T12:00:00Z","EventID":4740,"TargetUserName":"user06","CallerComputerName":"LAB-APP-01","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T12:04:00Z","EventID":4740,"TargetUserName":"user07","CallerComputerName":"LAB-APP-01","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T12:08:00Z","EventID":4740,"TargetUserName":"user08","CallerComputerName":"LAB-APP-01","Computer":"LAB-DC-01"}
+      ]
+    },
+    {
+      "case_id": "AUTH-004-NEG",
+      "rule_id": "AUTH-004",
+      "category": "negative",
+      "expected_alert": false,
+      "note": "Machine accounts are excluded by the documented tuning filter.",
+      "events": [
+        {"Timestamp":"2026-01-15T12:00:00Z","EventID":4740,"TargetUserName":"LAB-WS-01$","CallerComputerName":"LAB-MGMT-01","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T12:04:00Z","EventID":4740,"TargetUserName":"LAB-WS-02$","CallerComputerName":"LAB-MGMT-01","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T12:08:00Z","EventID":4740,"TargetUserName":"LAB-WS-03$","CallerComputerName":"LAB-MGMT-01","Computer":"LAB-DC-01"}
+      ]
+    },
+    {
+      "case_id": "AUTH-004-BOUNDARY",
+      "rule_id": "AUTH-004",
+      "category": "boundary",
+      "expected_alert": false,
+      "note": "Two lockouts remain below the threshold.",
+      "events": [
+        {"Timestamp":"2026-01-15T12:00:00Z","EventID":4740,"TargetUserName":"user06","CallerComputerName":"LAB-APP-01","Computer":"LAB-DC-01"},
+        {"Timestamp":"2026-01-15T12:07:00Z","EventID":4740,"TargetUserName":"user07","CallerComputerName":"LAB-APP-01","Computer":"LAB-DC-01"}
+      ]
+    },
+    {
+      "case_id": "AUTH-005-POS",
+      "rule_id": "AUTH-005",
+      "category": "positive",
+      "expected_alert": true,
+      "note": "Remote interactive logon receives special privileges one minute later.",
+      "events": [
+        {"Timestamp":"2026-01-15T13:00:00Z","EventID":4624,"TargetUserName":"admin01","IpAddress":"192.0.2.40","Computer":"LAB-SRV-01","LogonType":10,"TargetLogonId":"0x700"},
+        {"Timestamp":"2026-01-15T13:01:00Z","EventID":4672,"SubjectUserName":"admin01","SubjectLogonId":"0x700","Computer":"LAB-SRV-01"}
+      ]
+    },
+    {
+      "case_id": "AUTH-005-NEG",
+      "rule_id": "AUTH-005",
+      "category": "negative",
+      "expected_alert": false,
+      "note": "An interactive local logon is outside the remote logon types.",
+      "events": [
+        {"Timestamp":"2026-01-15T13:00:00Z","EventID":4624,"TargetUserName":"admin01","IpAddress":"127.0.0.1","Computer":"LAB-SRV-01","LogonType":2,"TargetLogonId":"0x701"},
+        {"Timestamp":"2026-01-15T13:01:00Z","EventID":4672,"SubjectUserName":"admin01","SubjectLogonId":"0x701","Computer":"LAB-SRV-01"}
+      ]
+    },
+    {
+      "case_id": "AUTH-005-BOUNDARY",
+      "rule_id": "AUTH-005",
+      "category": "boundary",
+      "expected_alert": false,
+      "note": "Privilege assignment occurs one second outside the two-minute window.",
+      "events": [
+        {"Timestamp":"2026-01-15T13:00:00Z","EventID":4624,"TargetUserName":"admin01","IpAddress":"192.0.2.40","Computer":"LAB-SRV-01","LogonType":10,"TargetLogonId":"0x702"},
+        {"Timestamp":"2026-01-15T13:02:01Z","EventID":4672,"SubjectUserName":"admin01","SubjectLogonId":"0x702","Computer":"LAB-SRV-01"}
+      ]
+    },
+    {
+      "case_id": "AUTH-005-TUNE",
+      "rule_id": "AUTH-005",
+      "category": "false_positive",
+      "expected_alert": true,
+      "disposition": "tune",
+      "note": "Approved fictional jump-host activity still alerts and requires an environment-owned exception.",
+      "events": [
+        {"Timestamp":"2026-01-15T13:20:00Z","EventID":4624,"TargetUserName":"admin02","IpAddress":"198.51.100.10","Computer":"LAB-SRV-02","LogonType":10,"TargetLogonId":"0x703"},
+        {"Timestamp":"2026-01-15T13:20:30Z","EventID":4672,"SubjectUserName":"admin02","SubjectLogonId":"0x703","Computer":"LAB-SRV-02"}
+      ]
+    }
+  ]
+}
+

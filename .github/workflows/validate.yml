@@ -1,0 +1,38 @@
+name: Validate detection lab
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: Install locked dependencies
+        run: uv sync --extra dev --locked
+      - name: Lint
+        run: uv run ruff check .
+      - name: Test
+        run: uv run pytest --cov=authlab --cov-report=term-missing
+      - name: Run complete lab
+        run: uv run authlab all
+      - name: Check committed reports are current
+        run: git diff --exit-code -- reports/latest
+      - name: Scan for committed secrets
+        run: uv run detect-secrets scan --all-files --exclude-files "uv.lock|reports/latest/.*"
+      - name: Audit Python dependencies
+        run: uv run pip-audit --skip-editable

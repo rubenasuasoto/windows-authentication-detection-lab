@@ -1,0 +1,18 @@
+case_id,rule_id,category,expected,observed,status,disposition,matched_event_count,matched_fields,note
+AUTH-001-POS,AUTH-001,positive,True,True,pass,keep,5,EventID;IpAddress;Computer,Five failures from one source in four minutes.
+AUTH-001-NEG,AUTH-001,negative,False,False,pass,keep,0,EventID;IpAddress;Computer,Failures are split across independent sources.
+AUTH-001-BOUNDARY,AUTH-001,boundary,False,False,pass,keep,0,EventID;IpAddress;Computer,Four failures remain immediately below the threshold.
+AUTH-002-POS,AUTH-002,positive,True,True,pass,keep,4,EventID;TargetUserName;IpAddress;Computer,One source reaches four distinct fictional users.
+AUTH-002-NEG,AUTH-002,negative,False,False,pass,keep,0,EventID;TargetUserName;IpAddress;Computer,Repeated failures affect only one account.
+AUTH-002-BOUNDARY,AUTH-002,boundary,False,False,pass,keep,0,EventID;TargetUserName;IpAddress;Computer,Three distinct users remain below the threshold.
+AUTH-003-POS,AUTH-003,positive,True,True,pass,keep,4,EventID;TargetUserName;IpAddress;Computer,Three failures are followed by success for the same identity and source.
+AUTH-003-NEG,AUTH-003,negative,False,False,pass,keep,0,EventID;TargetUserName;IpAddress;Computer,The successful logon comes from a different source.
+AUTH-003-BOUNDARY,AUTH-003,boundary,False,False,pass,keep,0,EventID;TargetUserName;IpAddress;Computer,Two failures before success remain below the threshold.
+AUTH-003-TUNE,AUTH-003,false_positive,True,True,pass,tune,4,EventID;TargetUserName;IpAddress;Computer,A fictional user succeeds after mistakes; preserve the alert and tune with environment context.
+AUTH-004-POS,AUTH-004,positive,True,True,pass,keep,3,EventID;CallerComputerName;Computer,Three user account lockouts share one caller.
+AUTH-004-NEG,AUTH-004,negative,False,False,pass,keep,0,EventID;CallerComputerName;Computer,Machine accounts are excluded by the documented tuning filter.
+AUTH-004-BOUNDARY,AUTH-004,boundary,False,False,pass,keep,0,EventID;CallerComputerName;Computer,Two lockouts remain below the threshold.
+AUTH-005-POS,AUTH-005,positive,True,True,pass,keep,2,EventID;LogonType;TargetLogonId;SubjectLogonId;Computer,Remote interactive logon receives special privileges one minute later.
+AUTH-005-NEG,AUTH-005,negative,False,False,pass,keep,0,EventID;LogonType;TargetLogonId;SubjectLogonId;Computer,An interactive local logon is outside the remote logon types.
+AUTH-005-BOUNDARY,AUTH-005,boundary,False,False,pass,keep,0,EventID;LogonType;TargetLogonId;SubjectLogonId;Computer,Privilege assignment occurs one second outside the two-minute window.
+AUTH-005-TUNE,AUTH-005,false_positive,True,True,pass,tune,2,EventID;LogonType;TargetLogonId;SubjectLogonId;Computer,Approved fictional jump-host activity still alerts and requires an environment-owned exception.

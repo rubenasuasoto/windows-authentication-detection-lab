@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laboratorio de detección de autenticación</title>
+  <style>
+    :root { --bg:#0d1513; --panel:#16211e; --panel2:#101916; --ink:#eef8f4; --muted:#a8bab2; --line:#344740; --green:#65d6a7; --blue:#78b7ff; --amber:#ffd27a; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 "Segoe UI",Arial,sans-serif; }
+    header { border-bottom:1px solid var(--line); padding:30px max(24px,calc((100vw - 1180px)/2)); background:var(--panel2); }
+    header div { display:flex; align-items:flex-start; justify-content:space-between; gap:20px; }
+    h1 { margin:0; font-size:30px; letter-spacing:0; } h2 { margin:0 0 14px; font-size:18px; }
+    p { color:var(--muted); } a { color:var(--green); }
+    main { max-width:1180px; margin:0 auto; padding:24px; display:grid; gap:18px; }
+    section { border:1px solid var(--line); background:var(--panel); border-radius:8px; padding:18px; }
+    .fingerprint { font:12px Consolas,monospace; color:var(--muted); }
+    .metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+    .metric { border:1px solid var(--line); background:var(--panel2); border-radius:7px; padding:14px; }
+    .metric strong { display:block; font-size:26px; color:var(--green); } .metric span { color:var(--muted); }
+    .detections { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .detection { border:1px solid var(--line); background:var(--panel2); border-radius:7px; padding:14px; }
+    .detection-head { display:flex; gap:10px; align-items:center; } .detection-head span { color:var(--blue); font:12px Consolas,monospace; }
+    .detection p { margin:8px 0; } .detection small { display:block; color:var(--muted); margin-top:10px; }
+    .chips { display:flex; flex-wrap:wrap; gap:6px; } .chips span { border:1px solid var(--line); padding:3px 7px; border-radius:999px; font-size:12px; color:var(--muted); }
+    .table-wrap { overflow:auto; } table { width:100%; border-collapse:collapse; min-width:850px; } th,td { padding:10px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; } th { color:var(--muted); font-size:12px; } td small { display:block; color:var(--muted); max-width:320px; }
+    .status { display:inline-block; padding:3px 7px; border-radius:999px; background:#26352f; } .pass,.keep { color:var(--green); } .fail { color:#ff9c91; } .tune { color:var(--amber); }
+    .notice { border-left:3px solid var(--amber); padding-left:12px; color:var(--muted); }
+    @media (max-width:760px) { .metrics,.detections { grid-template-columns:1fr; } h1 { font-size:24px; } header div { display:block; } }
+  </style>
+</head>
+<body>
+  <header><div><div><h1>Laboratorio de detección de autenticación</h1><p>Ingeniería de detección reproducible con telemetría sintética de Windows</p><span class="fingerprint">pack 0eb0cb6cc201</span></div><a href="report.en.html">English</a></div></header>
+  <main>
+    <section class="metrics">
+      <div class="metric"><strong>5/5</strong><span>Reglas válidas</span></div>
+      <div class="metric"><strong>17/17</strong><span>Pruebas superadas</span></div>
+      <div class="metric"><strong>2</strong><span>Casos para tuning</span></div>
+      <div class="metric"><strong>5/5</strong><span>Conversiones SPL</span></div>
+    </section>
+    <section><h2>Pack de detección</h2><div class="detections">
+        <article class="detection">
+          <div class="detection-head"><span>AUTH-001</span><strong>Failed Logon Burst From One Source</strong></div>
+          <p>5 events in 5 minutes per source and computer</p>
+          <div class="chips"><span>Events 4625</span><span>T1110.001</span></div>
+          <small>Baseline trusted scanners and identity infrastructure before adding exclusions.</small>
+        </article>
+        
+        <article class="detection">
+          <div class="detection-head"><span>AUTH-002</span><strong>Failed Logons Across Multiple Accounts</strong></div>
+          <p>4 distinct users in 10 minutes per source and computer</p>
+          <div class="chips"><span>Events 4625</span><span>T1110.003</span></div>
+          <small>Review shared gateways and authorized identity-testing systems.</small>
+        </article>
+        
+        <article class="detection">
+          <div class="detection-head"><span>AUTH-003</span><strong>Successful Logon After Repeated Failures</strong></div>
+          <p>3 failures followed by success in 10 minutes for the same user and source</p>
+          <div class="chips"><span>Events 4625, 4624</span><span>T1078</span></div>
+          <small>Compare with password resets, user mistakes and approved support activity.</small>
+        </article>
+        
+        <article class="detection">
+          <div class="detection-head"><span>AUTH-004</span><strong>Account Lockout Burst</strong></div>
+          <p>3 lockouts in 15 minutes per caller and computer</p>
+          <div class="chips"><span>Events 4740</span><span>Operational</span></div>
+          <small>Treat as an operational anomaly; investigate stale services and machine accounts first.</small>
+        </article>
+        
+        <article class="detection">
+          <div class="detection-head"><span>AUTH-005</span><strong>Remote Logon Followed By Special Privileges</strong></div>
+          <p>Remote or network logon followed by privileges in 2 minutes for the same logon ID</p>
+          <div class="chips"><span>Events 4624, 4672</span><span>T1078</span></div>
+          <small>Baseline approved administration paths, jump hosts and service identities.</small>
+        </article>
+        </div></section>
+    <section><h2>Matriz de validación</h2><div class="table-wrap"><table><thead><tr><th>Case</th><th>Rule</th><th>Category</th><th>Expected</th><th>Observed</th><th>Result</th><th>Decision</th></tr></thead><tbody>
+        <tr>
+          <td><strong>AUTH-001-POS</strong><small>Five failures from one source in four minutes.</small></td>
+          <td>AUTH-001</td>
+          <td>positive</td>
+          <td>true</td>
+          <td>true</td>
+          <td><span class="status pass">pass</span></td>
+          <td><span class="status keep">keep</span></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AUTH-001-NEG</strong><small>Failures are split across independent sources.</small></td>
+          <td>AUTH-001</td>
+          <td>negative</td>
+          <td>false</td>
+          <td>false</td>
+          <td><span class="status pass">pass</span></td>
+          <td><span class="status keep">keep</span></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AUTH-001-BOUNDARY</strong><small>Four failures remain immediately below the threshold.</small></td>
+          <td>AUTH-001</td>
+          <td>boundary</td>
+          <td>false</td>
+          <td>false</td>
+          <td><span class="status pass">pass</span></td>
+          <td><span class="status keep">keep</span></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AUTH-002-POS</strong><small>One source reaches four distinct fictional users.</small></td>
+          <td>AUTH-002</td>
+          <td>positive</td>
+          <td>true</td>
+          <td>true</td>
+          <td><span class="status pass">pass</span></td>
+          <td><span class="status keep">keep</span></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AUTH-002-NEG</strong><small>Repeated failures affect only one account.</small></td>
+          <td>AUTH-002</td>
+          <td>negative</td>
+          <td>false</td>
+          <td>false</td>
+          <td><span class="status pass">pass</span></td>
+          <td><span class="status keep">keep</span></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AUTH-002-BOUNDARY</strong><small>Three distinct users remain below the threshold.</small></td>
+          <td>AUTH-002</td>
+          <td>boundary</td>
+          <td>false</td>
+          <td>false</td>
+          <td><span class="status pass">pass</span></td>
+          <td><span class="status keep">keep</span></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AUTH-003-POS</strong><small>Three failures are followed by success for the same identity and source.</small></td>
+          <td>AUTH-003</td>
+          <td>positive</td>
+          <td>true</td>
+          <td>true</td>
+          <td><span class="status pass">pass</span></td>
+          <td><span class="status keep">keep</span></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AUTH-003-NEG</strong><small>The successful logon comes from a different source.</small></td>
+          <td>AUTH-003</td>
+          <td>negative</td>
+          <td>false</td>
+          <td>false</td>
+          <td><span class="status pass">pass</span></td>
+          <td><span class="status keep">keep</span></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AUTH-003-BOUNDARY</strong><small>Two failures before success remain below the threshold.</small></td>
+          <td>AUTH-003</td>
+          <td>boundary</td>
+          <td>false</td>
+          <td>false</td>
+          <td><span class="status pass">pass</span></td>
+          <td><span class="status keep">keep</span></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AUTH-003-TUNE</strong><small>A fictional user succeeds after mistakes; preserve the alert and tune with environment context.</small></td>
+          <td>AUTH-003</td>
+          <td>false_positive</td>
+          <td>true</td>
+          <td>true</td>
+          <td><span class="status pass">pass</span></td>
+          <td><span class="status tune">tune</span></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AUTH-004-POS</strong><small>Three user account lockouts share one caller.</small></td>
+          <td>AUTH-004</td>
+          <td>positive</td>
+          <td>true</td>
+          <td>true</td>
+          <td><span class="status pass">pass</span></td>
+          <td><span class="status keep">keep</span></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AUTH-004-NEG</strong><small>Machine accounts are excluded by the documented tuning filter.</small></td>
+          <td>AUTH-004</td>
+          <td>negative</td>
+          <td>false</td>
+          <td>false</td>
+          <td><span class="status pass">pass</span></td>
+          <td><span class="status keep">keep</span></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AUTH-004-BOUNDARY</strong><small>Two lockouts remain below the threshold.</small></td>
+          <td>AUTH-004</td>
+          <td>boundary</td>
+          <td>false</td>
+          <td>false</td>
+          <td><span class="status pass">pass</span></td>
+          <td><span class="status keep">keep</span></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AUTH-005-POS</strong><small>Remote interactive logon receives special privileges one minute later.</small></td>
+          <td>AUTH-005</td>
+          <td>positive</td>
+          <td>true</td>
+          <td>true</td>
+          <td><span class="status pass">pass</span></td>
+          <td><span class="status keep">keep</span></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AUTH-005-NEG</strong><small>An interactive local logon is outside the remote logon types.</small></td>
+          <td>AUTH-005</td>
+          <td>negative</td>
+          <td>false</td>
+          <td>false</td>
+          <td><span class="status pass">pass</span></td>
+          <td><span class="status keep">keep</span></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AUTH-005-BOUNDARY</strong><small>Privilege assignment occurs one second outside the two-minute window.</small></td>
+          <td>AUTH-005</td>
+          <td>boundary</td>
+          <td>false</td>
+          <td>false</td>
+          <td><span class="status pass">pass</span></td>
+          <td><span class="status keep">keep</span></td>
+        </tr>
+        
+        <tr>
+          <td><strong>AUTH-005-TUNE</strong><small>Approved fictional jump-host activity still alerts and requires an environment-owned exception.</small></td>
+          <td>AUTH-005</td>
+          <td>false_positive</td>
+          <td>true</td>
+          <td>true</td>
+          <td><span class="status pass">pass</span></td>
+          <td><span class="status tune">tune</span></td>
+        </tr>
+        </tbody></table></div></section>
+    <section><h2>Alcance y limitaciones</h2><p class="notice">El runner usa eventos sintéticos y no sustituye a un SIEM. 0 correlaciones usan SPL de compatibilidad revisado.</p></section>
+  </main>
+</body>
+</html>

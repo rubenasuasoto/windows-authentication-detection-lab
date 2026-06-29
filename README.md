@@ -17,6 +17,7 @@ SPL, and publishes a bilingual validation report.
 - Transparent handling of false positives and backend limitations.
 - Reproducible validation and reporting through CI.
 - ATT&CK-aligned detection reasoning without unsafe activity.
+- Dependency and secret auditing on every proposed change.
 
 ## Detection pack
 
@@ -54,9 +55,10 @@ authlab all                      Run audit, validation, conversion and reports
 
 ## Important limitation
 
-The fixture runner is an educational test oracle, not a SIEM. Correlation
-support differs between Sigma backends. Conversion output must be reviewed and
-tested in an authorized target environment before operational use.
+The fixture runner is an educational test oracle, not a SIEM. The Splunk
+conversion uses the explicit `splunk_windows` processing pipeline. Correlation
+support differs between Sigma backends, so output must be reviewed and tested
+in an authorized target environment before operational use.
 
 ## Documentation
 
@@ -66,4 +68,3 @@ tested in an authorized target environment before operational use.
 - [Security policy](SECURITY.md)
 
 Licensed under the [MIT License](LICENSE).
-
