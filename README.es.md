@@ -53,6 +53,13 @@ La [fase opcional de VM aislada](docs/VM_LAB.md) validará la telemetría real d
 Windows mediante cuentas ficticias y acciones administrativas normales. No
 incluye herramientas ofensivas ni datos de producción.
 
+## Documentación técnica
+
+- [Detection catalog](docs/DETECTION_CATALOG.md)
+- [Validation and tuning](docs/VALIDATION.md)
+- [Tuning guide](docs/TUNING_GUIDE.md)
+- [Data sources](docs/DATA_SOURCES.md)
+
 ## Presentación
 
 La guía [Portfolio presentation guide](docs/PORTFOLIO_PRESENTATION.md) resume

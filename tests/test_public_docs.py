@@ -9,6 +9,8 @@ PUBLIC_DOCS = [
     ROOT / "SECURITY.md",
     ROOT / "docs" / "ARCHITECTURE.md",
     ROOT / "docs" / "DATA_SOURCES.md",
+    ROOT / "docs" / "DETECTION_CATALOG.md",
+    ROOT / "docs" / "TUNING_GUIDE.md",
     ROOT / "docs" / "VALIDATION.md",
     ROOT / "docs" / "VM_LAB.md",
     ROOT / "docs" / "PORTFOLIO_PRESENTATION.md",
@@ -28,11 +30,41 @@ class PublicDocumentationTests(unittest.TestCase):
         links = re.findall(r"\[[^\]]+\]\(([^)]+)\)", readme)
         local_links = [link for link in links if not link.startswith(("http://", "https://"))]
 
+        self.assertIn("docs/DETECTION_CATALOG.md", local_links)
         self.assertIn("docs/PORTFOLIO_PRESENTATION.md", local_links)
+        self.assertIn("docs/TUNING_GUIDE.md", local_links)
         for link in local_links:
             target = ROOT / link.split("#", 1)[0]
             with self.subTest(link=link):
                 self.assertTrue(target.exists(), f"Broken README link: {link}")
+
+    def test_detection_catalog_matches_manifest_identity(self) -> None:
+        import json
+
+        manifest = json.loads((ROOT / "rules" / "manifest.json").read_text(encoding="utf-8"))
+        catalog = (ROOT / "docs" / "DETECTION_CATALOG.md").read_text(encoding="utf-8")
+
+        for detection in manifest["detections"]:
+            with self.subTest(key=detection["key"]):
+                self.assertIn(detection["key"], catalog)
+                self.assertIn(detection["title"], catalog)
+
+    def test_tuning_guide_covers_visible_tuning_cases(self) -> None:
+        import json
+
+        fixtures = json.loads(
+            (ROOT / "tests" / "fixtures" / "scenarios.json").read_text(encoding="utf-8")
+        )
+        guide = (ROOT / "docs" / "TUNING_GUIDE.md").read_text(encoding="utf-8")
+        tuning_cases = [
+            item for item in fixtures["cases"] if item.get("disposition") == "tune"
+        ]
+
+        self.assertGreaterEqual(len(tuning_cases), 2)
+        for case in tuning_cases:
+            with self.subTest(case_id=case["case_id"]):
+                self.assertIn(case["case_id"], guide)
+                self.assertIn(case["rule_id"], guide)
 
     def test_portfolio_guide_keeps_defensive_scope_visible(self) -> None:
         text = (ROOT / "docs" / "PORTFOLIO_PRESENTATION.md").read_text(encoding="utf-8")
