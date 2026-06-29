@@ -1,0 +1,64 @@
+title: Remote Logon Followed By Special Privileges
+id: f71b7992-7990-486f-a9df-19d6b6c71cf2
+status: test
+description: Detects a network or remote interactive logon followed by special privileges for the same logon ID.
+author: Rubén Asúa
+date: 2026-06-29
+references:
+  - https://attack.mitre.org/techniques/T1078/
+tags:
+  - attack.initial-access
+  - attack.persistence
+  - attack.privilege-escalation
+  - attack.t1078
+correlation:
+  type: temporal_ordered
+  rules:
+    - authlab_remote_logon_event_005
+    - authlab_special_privileges_event_005
+  aliases:
+    logon_id:
+      authlab_remote_logon_event_005: TargetLogonId
+      authlab_special_privileges_event_005: SubjectLogonId
+  group-by:
+    - logon_id
+    - Computer
+  timespan: 2m
+falsepositives:
+  - Approved remote administration through managed jump hosts.
+level: medium
+---
+title: Remote Logon Event For AUTH-005
+id: af6225d3-5d17-4b31-9437-dd8c91ea674b
+name: authlab_remote_logon_event_005
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4624
+    LogonType:
+      - 3
+      - 10
+  condition: selection
+fields:
+  - TargetUserName
+  - TargetLogonId
+  - IpAddress
+  - Computer
+---
+title: Special Privileges Event For AUTH-005
+id: 532a28fe-b4af-4a21-b9b2-a2daff8c6858
+name: authlab_special_privileges_event_005
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4672
+  condition: selection
+fields:
+  - SubjectUserName
+  - SubjectLogonId
+  - Computer
+

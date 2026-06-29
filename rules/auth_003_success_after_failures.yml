@@ -1,0 +1,72 @@
+title: Successful Logon After Repeated Failures
+id: e799e2f1-77cb-49c5-85ef-d42b76f884b3
+status: test
+description: Detects repeated failures followed by a successful logon for the same user and source within ten minutes.
+author: Rubén Asúa
+date: 2026-06-29
+references:
+  - https://attack.mitre.org/techniques/T1078/
+tags:
+  - attack.initial-access
+  - attack.persistence
+  - attack.privilege-escalation
+  - attack.t1078
+correlation:
+  type: temporal_ordered
+  rules:
+    - authlab_repeated_failures_003
+    - authlab_successful_logon_003
+  group-by:
+    - TargetUserName
+    - IpAddress
+    - Computer
+  timespan: 10m
+falsepositives:
+  - A legitimate user succeeding after typing an incorrect password or completing a password reset.
+level: high
+---
+title: Repeated Failures For AUTH-003
+id: 295f3cf1-78e3-49f0-aae6-8f49ea84d731
+name: authlab_repeated_failures_003
+correlation:
+  type: event_count
+  rules:
+    - authlab_failed_logon_event_003
+  group-by:
+    - TargetUserName
+    - IpAddress
+    - Computer
+  timespan: 10m
+  condition:
+    gte: 3
+---
+title: Failed Logon Event For AUTH-003
+id: 9986ca0a-151d-48f8-95e4-128aa9b4e113
+name: authlab_failed_logon_event_003
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4625
+  condition: selection
+fields:
+  - TargetUserName
+  - IpAddress
+  - Computer
+---
+title: Successful Logon Event For AUTH-003
+id: b5014d59-50c3-4164-9aa7-576aa123bbdd
+name: authlab_successful_logon_003
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4624
+  condition: selection
+fields:
+  - TargetUserName
+  - IpAddress
+  - Computer
+

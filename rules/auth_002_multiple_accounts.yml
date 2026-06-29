@@ -1,0 +1,46 @@
+title: Failed Logons Across Multiple Accounts
+id: a2d6d6c0-0066-4e40-88b7-7fc1486347b3
+status: test
+description: Detects failed Windows logons for four or more distinct users from one source in ten minutes.
+author: Rubén Asúa
+date: 2026-06-29
+references:
+  - https://attack.mitre.org/techniques/T1110/003/
+tags:
+  - attack.credential-access
+  - attack.t1110.003
+correlation:
+  type: value_count
+  rules:
+    - authlab_failed_logon_event_002
+  group-by:
+    - IpAddress
+    - Computer
+  timespan: 10m
+  condition:
+    field: TargetUserName
+    gte: 4
+falsepositives:
+  - Shared gateways, stale application credentials or authorized identity testing.
+level: medium
+---
+title: Failed Logon Event For AUTH-002
+id: 74495b0f-05fe-4ef4-b25b-137ec977d660
+name: authlab_failed_logon_event_002
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4625
+  filter_invalid_source:
+    IpAddress:
+      - '-'
+      - 127.0.0.1
+      - ::1
+  condition: selection and not filter_invalid_source
+fields:
+  - TargetUserName
+  - IpAddress
+  - Computer
+

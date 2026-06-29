@@ -1,0 +1,45 @@
+title: Failed Logon Burst From One Source
+id: 8e713a67-80ec-446a-97c8-804f7216233e
+status: test
+description: Detects five or more failed Windows logons from one source against one computer in five minutes.
+author: Rubén Asúa
+date: 2026-06-29
+references:
+  - https://attack.mitre.org/techniques/T1110/001/
+tags:
+  - attack.credential-access
+  - attack.t1110.001
+correlation:
+  type: event_count
+  rules:
+    - authlab_failed_logon_event_001
+  group-by:
+    - IpAddress
+    - Computer
+  timespan: 5m
+  condition:
+    gte: 5
+falsepositives:
+  - Mistyped credentials from shared workstations or authorized authentication testing.
+level: medium
+---
+title: Failed Logon Event For AUTH-001
+id: d4ea0651-57cd-444c-ac20-0ef9d30531ec
+name: authlab_failed_logon_event_001
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4625
+  filter_invalid_source:
+    IpAddress:
+      - '-'
+      - 127.0.0.1
+      - ::1
+  condition: selection and not filter_invalid_source
+fields:
+  - TargetUserName
+  - IpAddress
+  - Computer
+

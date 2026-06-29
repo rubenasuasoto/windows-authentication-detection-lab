@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "pack": "Windows Authentication Anomalies",
+  "author": "Rubén Asúa",
+  "detections": [
+    {
+      "key": "AUTH-001",
+      "file": "auth_001_failed_logon_burst.yml",
+      "title": "Failed Logon Burst From One Source",
+      "event_ids": [4625],
+      "required_fields": ["EventID", "IpAddress", "Computer", "Timestamp"],
+      "threshold": "5 events in 5 minutes per source and computer",
+      "attack": ["T1110.001"],
+      "tuning": "Baseline trusted scanners and identity infrastructure before adding exclusions."
+    },
+    {
+      "key": "AUTH-002",
+      "file": "auth_002_multiple_accounts.yml",
+      "title": "Failed Logons Across Multiple Accounts",
+      "event_ids": [4625],
+      "required_fields": ["EventID", "TargetUserName", "IpAddress", "Computer", "Timestamp"],
+      "threshold": "4 distinct users in 10 minutes per source and computer",
+      "attack": ["T1110.003"],
+      "tuning": "Review shared gateways and authorized identity-testing systems."
+    },
+    {
+      "key": "AUTH-003",
+      "file": "auth_003_success_after_failures.yml",
+      "title": "Successful Logon After Repeated Failures",
+      "event_ids": [4625, 4624],
+      "required_fields": ["EventID", "TargetUserName", "IpAddress", "Computer", "Timestamp"],
+      "threshold": "3 failures followed by success in 10 minutes for the same user and source",
+      "attack": ["T1078"],
+      "tuning": "Compare with password resets, user mistakes and approved support activity."
+    },
+    {
+      "key": "AUTH-004",
+      "file": "auth_004_account_lockout_burst.yml",
+      "title": "Account Lockout Burst",
+      "event_ids": [4740],
+      "required_fields": ["EventID", "TargetUserName", "CallerComputerName", "Computer", "Timestamp"],
+      "threshold": "3 lockouts in 15 minutes per caller and computer",
+      "attack": [],
+      "tuning": "Treat as an operational anomaly; investigate stale services and machine accounts first."
+    },
+    {
+      "key": "AUTH-005",
+      "file": "auth_005_privileged_remote_logon.yml",
+      "title": "Remote Logon Followed By Special Privileges",
+      "event_ids": [4624, 4672],
+      "required_fields": ["EventID", "LogonType", "TargetLogonId", "SubjectLogonId", "Computer", "Timestamp"],
+      "threshold": "Remote or network logon followed by privileges in 2 minutes for the same logon ID",
+      "attack": ["T1078"],
+      "tuning": "Baseline approved administration paths, jump hosts and service identities."
+    }
+  ]
+}
+

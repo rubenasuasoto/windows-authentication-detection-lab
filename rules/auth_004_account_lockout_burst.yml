@@ -1,0 +1,39 @@
+title: Account Lockout Burst
+id: e1146c8d-9dd6-47f8-920a-3a5bf9b7fef2
+status: test
+description: Detects three or more account lockouts related to one caller and computer in fifteen minutes.
+author: Rubén Asúa
+date: 2026-06-29
+references:
+  - https://learn.microsoft.com/windows/security/threat-protection/auditing/event-4740
+correlation:
+  type: event_count
+  rules:
+    - authlab_account_lockout_event_004
+  group-by:
+    - CallerComputerName
+    - Computer
+  timespan: 15m
+  condition:
+    gte: 3
+falsepositives:
+  - Stale service credentials, disconnected devices or a user repeatedly entering an old password.
+level: medium
+---
+title: Account Lockout Event For AUTH-004
+id: a7046598-12a1-44a1-9731-925d69febebe
+name: authlab_account_lockout_event_004
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4740
+  filter_machine_accounts:
+    TargetUserName|endswith: '$'
+  condition: selection and not filter_machine_accounts
+fields:
+  - TargetUserName
+  - CallerComputerName
+  - Computer
+
