@@ -7,6 +7,7 @@ PUBLIC_DOCS = [
     ROOT / "README.md",
     ROOT / "README.es.md",
     ROOT / "SECURITY.md",
+    ROOT / "docs" / "ALERT_NARRATIVES.md",
     ROOT / "docs" / "ARCHITECTURE.md",
     ROOT / "docs" / "DATA_SOURCES.md",
     ROOT / "docs" / "DETECTION_CATALOG.md",
@@ -115,6 +116,26 @@ class PublicDocumentationTests(unittest.TestCase):
         self.assertIn("auth_003_success_after_failures.spl", text)
         self.assertIn("auth_005_privileged_remote_logon.spl", text)
         self.assertIn("reviewed compatibility", text)
+
+    def test_alert_narratives_cover_every_detection(self) -> None:
+        import json
+
+        manifest = json.loads((ROOT / "rules" / "manifest.json").read_text(encoding="utf-8"))
+        narratives = (ROOT / "docs" / "ALERT_NARRATIVES.md").read_text(encoding="utf-8")
+
+        for detection in manifest["detections"]:
+            with self.subTest(key=detection["key"]):
+                self.assertIn(detection["key"], narratives)
+                self.assertIn(detection["title"], narratives)
+        for phrase in ("What happened", "Why it matters", "What to check next", "Decision"):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, narratives)
+
+    def test_portfolio_guide_mentions_alert_narratives(self) -> None:
+        text = (ROOT / "docs" / "PORTFOLIO_PRESENTATION.md").read_text(encoding="utf-8")
+
+        self.assertIn("docs/ALERT_NARRATIVES.md", text)
+        self.assertIn("analyst-facing narratives", text)
 
     def test_vm_checklist_keeps_changes_explicit(self) -> None:
         text = (ROOT / "docs" / "VM_READINESS_CHECKLIST.md").read_text(encoding="utf-8")

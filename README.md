@@ -54,7 +54,8 @@ ignored by Git.
 4. Open `reports/latest/report.en.html` for the portfolio-ready validation
    matrix.
 5. Read the per-rule playbooks in `docs/playbooks/`.
-6. Read `docs/TUNING_GUIDE.md` to see how false positives are handled without
+6. Review `docs/ALERT_NARRATIVES.md` for analyst-facing alert summaries.
+7. Read `docs/TUNING_GUIDE.md` to see how false positives are handled without
    hiding the detection behavior.
 
 ## Commands
@@ -80,6 +81,7 @@ in an authorized target environment before operational use.
 ## Documentation
 
 - [Architecture](docs/ARCHITECTURE.md)
+- [Alert narratives](docs/ALERT_NARRATIVES.md)
 - [Data sources](docs/DATA_SOURCES.md)
 - [Detection catalog](docs/DETECTION_CATALOG.md)
 - [Per-rule playbooks](docs/playbooks/)

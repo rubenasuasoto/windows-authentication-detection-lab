@@ -18,7 +18,8 @@ conversion, reports and safety checks.
 2. `tests/fixtures/scenarios.json`: positive, negative, boundary and tuning
    cases.
 3. `reports/latest/report.en.html`: the generated validation matrix.
-4. `.github/workflows/validate.yml`: CI that runs linting, tests, conversion,
+4. `docs/ALERT_NARRATIVES.md`: examples of analyst-facing alert summaries.
+5. `.github/workflows/validate.yml`: CI that runs linting, tests, conversion,
    reporting, secret scanning and dependency audit.
 
 ## Interview talking points
@@ -30,6 +31,8 @@ conversion, reports and safety checks.
   does not convert `temporal_ordered` correlations natively.
 - I treated false positives as tuning cases. The matrix keeps them visible
   instead of pretending every scenario is a perfect alert.
+- I wrote analyst-facing narratives so the detections can be explained as
+  observable facts, impact and next steps.
 - I kept the lab safe for publication: no EVTX files, credentials, binaries,
   memory access, production paths or offensive simulations.
 

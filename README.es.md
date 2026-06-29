@@ -42,7 +42,8 @@ versiones.
    informes.
 4. Abre `reports/latest/report.es.html` para ver la matriz de validación.
 5. Lee los playbooks por regla en `docs/playbooks/`.
-6. Lee `docs/TUNING_GUIDE.md` para comprobar cómo se tratan falsos positivos
+6. Revisa `docs/ALERT_NARRATIVES.md` para ver res?menes de alerta escritos como analista.
+7. Lee `docs/TUNING_GUIDE.md` para comprobar cómo se tratan falsos positivos
    sin ocultar el comportamiento detectado.
 
 ## Comandos
@@ -70,6 +71,7 @@ incluye herramientas ofensivas ni datos de producción.
 ## Documentación técnica
 
 - [Detection catalog](docs/DETECTION_CATALOG.md)
+- [Alert narratives](docs/ALERT_NARRATIVES.md)
 - [Per-rule playbooks](docs/playbooks/)
 - [Validation and tuning](docs/VALIDATION.md)
 - [Tuning guide](docs/TUNING_GUIDE.md)
