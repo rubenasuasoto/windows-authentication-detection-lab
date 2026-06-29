@@ -7,6 +7,7 @@ from .audit import audit_repository
 from .convert import convert_rules
 from .report import build_reports
 from .validation import run_validation
+from .vm_lab import write_vm_readiness
 
 
 def _audit() -> bool:
@@ -41,6 +42,21 @@ def _report() -> bool:
     return True
 
 
+def _vm_check() -> bool:
+    payload = write_vm_readiness()
+    summary = {
+        "platform": payload["platform"],
+        "windows_edition": payload["windows_edition"],
+        "providers": payload["providers"],
+        "preferred_provider": payload["preferred_provider"],
+        "ready": payload["ready"],
+        "changes_applied": payload["changes_applied"],
+        "next_step": payload["next_step"],
+    }
+    print(json.dumps(summary, ensure_ascii=False))
+    return True
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Safe Windows authentication detection lab")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -49,6 +65,7 @@ def build_parser() -> argparse.ArgumentParser:
     convert_parser = subparsers.add_parser("convert", help="convert rules to a reviewed backend")
     convert_parser.add_argument("--backend", default="splunk", choices=("splunk",))
     subparsers.add_parser("report", help="build bilingual portfolio reports")
+    subparsers.add_parser("vm-check", help="inspect VM readiness without changing the host")
     subparsers.add_parser("all", help="run audit, validation, conversion and reports")
     return parser
 
@@ -63,6 +80,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if _convert(args.backend) else 1
     if args.command == "report":
         return 0 if _report() else 1
+    if args.command == "vm-check":
+        return 0 if _vm_check() else 1
 
     audit_ok = _audit()
     validation_ok = _validate()

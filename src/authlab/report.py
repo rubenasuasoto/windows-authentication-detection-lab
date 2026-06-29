@@ -198,13 +198,13 @@ def _html_report(
   <style>
     :root {{ --bg:#0d1513; --panel:#16211e; --panel2:#101916; --ink:#eef8f4; --muted:#a8bab2; --line:#344740; --green:#65d6a7; --blue:#78b7ff; --amber:#ffd27a; }}
     * {{ box-sizing:border-box; }}
-    body {{ margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 "Segoe UI",Arial,sans-serif; }}
+    body {{ margin:0; overflow-x:hidden; background:var(--bg); color:var(--ink); font:15px/1.5 "Segoe UI",Arial,sans-serif; }}
     header {{ border-bottom:1px solid var(--line); padding:30px max(24px,calc((100vw - 1180px)/2)); background:var(--panel2); }}
     header div {{ display:flex; align-items:flex-start; justify-content:space-between; gap:20px; }}
     h1 {{ margin:0; font-size:30px; letter-spacing:0; }} h2 {{ margin:0 0 14px; font-size:18px; }}
     p {{ color:var(--muted); }} a {{ color:var(--green); }}
-    main {{ max-width:1180px; margin:0 auto; padding:24px; display:grid; gap:18px; }}
-    section {{ border:1px solid var(--line); background:var(--panel); border-radius:8px; padding:18px; }}
+    main {{ min-width:0; max-width:1180px; margin:0 auto; padding:24px; display:grid; gap:18px; }}
+    section {{ min-width:0; border:1px solid var(--line); background:var(--panel); border-radius:8px; padding:18px; }}
     .fingerprint {{ font:12px Consolas,monospace; color:var(--muted); }}
     .metrics {{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }}
     .metric {{ border:1px solid var(--line); background:var(--panel2); border-radius:7px; padding:14px; }}
@@ -214,10 +214,10 @@ def _html_report(
     .detection-head {{ display:flex; gap:10px; align-items:center; }} .detection-head span {{ color:var(--blue); font:12px Consolas,monospace; }}
     .detection p {{ margin:8px 0; }} .detection small {{ display:block; color:var(--muted); margin-top:10px; }}
     .chips {{ display:flex; flex-wrap:wrap; gap:6px; }} .chips span {{ border:1px solid var(--line); padding:3px 7px; border-radius:999px; font-size:12px; color:var(--muted); }}
-    .table-wrap {{ overflow:auto; }} table {{ width:100%; border-collapse:collapse; min-width:850px; }} th,td {{ padding:10px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }} th {{ color:var(--muted); font-size:12px; }} td small {{ display:block; color:var(--muted); max-width:320px; }}
+    .table-wrap {{ min-width:0; max-width:100%; overflow:auto; }} table {{ width:100%; border-collapse:collapse; min-width:850px; }} th,td {{ padding:10px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }} th {{ color:var(--muted); font-size:12px; }} td small {{ display:block; color:var(--muted); max-width:320px; }}
     .status {{ display:inline-block; padding:3px 7px; border-radius:999px; background:#26352f; }} .pass,.keep {{ color:var(--green); }} .fail {{ color:#ff9c91; }} .tune {{ color:var(--amber); }}
     .notice {{ border-left:3px solid var(--amber); padding-left:12px; color:var(--muted); }}
-    @media (max-width:760px) {{ .metrics,.detections {{ grid-template-columns:1fr; }} h1 {{ font-size:24px; }} header div {{ display:block; }} }}
+    @media (max-width:760px) {{ .metrics,.detections {{ grid-template-columns:minmax(0,1fr); }} h1 {{ font-size:24px; }} header div {{ display:block; }} header p {{ overflow-wrap:anywhere; }} }}
   </style>
 </head>
 <body>

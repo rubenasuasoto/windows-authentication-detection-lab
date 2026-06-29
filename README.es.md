@@ -40,9 +40,15 @@ authlab validate                 Valida reglas y ejecuta fixtures seguros
 authlab convert --backend splunk Convierte reglas compatibles a Splunk SPL
 authlab report                   Genera informes en inglés y español
 authlab audit                    Rechaza artefactos privados o inseguros
+authlab vm-check                 Comprueba la VM sin modificar Windows
 authlab all                      Ejecuta auditoría, validación, conversión e informes
 ```
 
 El runner de fixtures es un oráculo educativo, no sustituye a un SIEM. Las
 reglas conservan el estado `test` hasta validarse en un entorno autorizado.
 
+## Siguiente fase
+
+La [fase opcional de VM aislada](docs/VM_LAB.md) validará la telemetría real de
+Windows mediante cuentas ficticias y acciones administrativas normales. No
+incluye herramientas ofensivas ni datos de producción.

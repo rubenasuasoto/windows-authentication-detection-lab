@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "run_id": "VM-A-YYYYMMDD-01",
+  "lab_phase": "VM-A",
+  "snapshot": "clean-auth-audit-baseline",
+  "windows_build": "evaluation-build",
+  "audit_policy_reference": "docs/private-not-committed",
+  "rule_id": "AUTH-001",
+  "expected_alert": true,
+  "observed_alert": null,
+  "event_ids": [4625],
+  "fields_observed": [
+    "EventID",
+    "TargetUserName",
+    "IpAddress",
+    "Computer",
+    "Timestamp"
+  ],
+  "evidence": {
+    "raw_logs_committed": false,
+    "identities_fictional": true,
+    "addresses_use_documentation_ranges": true
+  },
+  "tuning_decision": "pending",
+  "analyst_note": "Record only sanitized observations and the final tuning decision."
+}
+

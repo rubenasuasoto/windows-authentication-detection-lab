@@ -10,6 +10,8 @@ SPL, and publishes a bilingual validation report.
 > Lab-only and defensive. No real credentials, production logs, malware,
 > binaries, memory access or offensive simulations are included.
 
+![Validation report preview](docs/assets/report-preview.png)
+
 ## What this demonstrates
 
 - Sigma rule and correlation design.
@@ -50,6 +52,7 @@ authlab validate                 Validate rules and execute safe fixtures
 authlab convert --backend splunk Convert supported rules to Splunk SPL
 authlab report                   Build English and Spanish reports
 authlab audit                    Reject unsafe or private artifacts
+authlab vm-check                 Inspect VM readiness without changing Windows
 authlab all                      Run audit, validation, conversion and reports
 ```
 
@@ -65,6 +68,7 @@ in an authorized target environment before operational use.
 - [Architecture](docs/ARCHITECTURE.md)
 - [Data sources](docs/DATA_SOURCES.md)
 - [Validation and tuning](docs/VALIDATION.md)
+- [Optional isolated VM lab](docs/VM_LAB.md)
 - [Security policy](SECURITY.md)
 
 Licensed under the [MIT License](LICENSE).

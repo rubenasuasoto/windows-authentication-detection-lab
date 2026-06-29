@@ -23,3 +23,8 @@ Sigma correlations are not supported equally by every backend. Failed
 conversion is reported as a visible compatibility result, never silently
 treated as a successful deployment artifact.
 
+The pinned pySigma Splunk backend converts `event_count` and `value_count`
+natively but does not currently convert `temporal_ordered`. For AUTH-003 and
+AUTH-005 the lab emits separately marked, reviewed compatibility SPL based on
+the same fields and time windows. These queries are evidence for review, not a
+claim of production deployment.
