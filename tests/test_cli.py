@@ -45,6 +45,28 @@ class CliTests(unittest.TestCase):
         self.assertFalse(summary["changes_applied"])
         self.assertIn("providers", summary)
 
+    def test_list_rules_outputs_detection_ids_and_playbooks(self) -> None:
+        exit_code, output = self._run_cli("list-rules")
+
+        self.assertEqual(exit_code, 0)
+        self.assertIn("AUTH-001", output)
+        self.assertIn("AUTH-005", output)
+        self.assertIn("docs/playbooks/", output)
+
+    def test_explain_outputs_one_detection(self) -> None:
+        exit_code, output = self._run_cli("explain", "AUTH-003")
+
+        self.assertEqual(exit_code, 0)
+        self.assertIn("Successful Logon After Repeated Failures", output)
+        self.assertIn("Required fields", output)
+        self.assertIn("Playbook", output)
+
+    def test_explain_unknown_detection_fails_cleanly(self) -> None:
+        exit_code, output = self._run_cli("explain", "AUTH-999")
+
+        self.assertEqual(exit_code, 1)
+        self.assertIn("Unknown detection id", output)
+
     def test_all_command_runs_public_pipeline(self) -> None:
         exit_code, output = self._run_cli("all")
 

@@ -5,6 +5,7 @@ import json
 
 from .audit import audit_repository
 from .convert import convert_rules
+from .explain import format_detection, format_rule_list
 from .report import build_reports
 from .validation import run_validation
 from .vm_lab import write_vm_readiness
@@ -57,6 +58,20 @@ def _vm_check() -> bool:
     return True
 
 
+def _list_rules() -> bool:
+    print(format_rule_list())
+    return True
+
+
+def _explain(rule_id: str) -> bool:
+    try:
+        print(format_detection(rule_id))
+    except KeyError as exc:
+        print(str(exc))
+        return False
+    return True
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Safe Windows authentication detection lab")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -66,6 +81,9 @@ def build_parser() -> argparse.ArgumentParser:
     convert_parser.add_argument("--backend", default="splunk", choices=("splunk",))
     subparsers.add_parser("report", help="build bilingual portfolio reports")
     subparsers.add_parser("vm-check", help="inspect VM readiness without changing the host")
+    subparsers.add_parser("list-rules", help="list detections and their playbooks")
+    explain_parser = subparsers.add_parser("explain", help="explain one detection")
+    explain_parser.add_argument("rule_id", help="detection id such as AUTH-003")
     subparsers.add_parser("all", help="run audit, validation, conversion and reports")
     return parser
 
@@ -82,6 +100,10 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if _report() else 1
     if args.command == "vm-check":
         return 0 if _vm_check() else 1
+    if args.command == "list-rules":
+        return 0 if _list_rules() else 1
+    if args.command == "explain":
+        return 0 if _explain(args.rule_id) else 1
 
     audit_ok = _audit()
     validation_ok = _validate()

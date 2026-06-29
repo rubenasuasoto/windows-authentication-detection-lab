@@ -53,7 +53,8 @@ ignored by Git.
 3. Run `uv run authlab all` to rebuild validation, SPL conversion and reports.
 4. Open `reports/latest/report.en.html` for the portfolio-ready validation
    matrix.
-5. Read `docs/TUNING_GUIDE.md` to see how false positives are handled without
+5. Read the per-rule playbooks in `docs/playbooks/`.
+6. Read `docs/TUNING_GUIDE.md` to see how false positives are handled without
    hiding the detection behavior.
 
 ## Commands
@@ -64,6 +65,8 @@ authlab convert --backend splunk Convert supported rules to Splunk SPL
 authlab report                   Build English and Spanish reports
 authlab audit                    Reject unsafe or private artifacts
 authlab vm-check                 Inspect VM readiness without changing Windows
+authlab list-rules               List detections and linked playbooks
+authlab explain AUTH-003         Explain one detection for review or interviews
 authlab all                      Run audit, validation, conversion and reports
 ```
 
@@ -79,10 +82,12 @@ in an authorized target environment before operational use.
 - [Architecture](docs/ARCHITECTURE.md)
 - [Data sources](docs/DATA_SOURCES.md)
 - [Detection catalog](docs/DETECTION_CATALOG.md)
+- [Per-rule playbooks](docs/playbooks/)
 - [Validation and tuning](docs/VALIDATION.md)
 - [Tuning guide](docs/TUNING_GUIDE.md)
 - [Portfolio presentation guide](docs/PORTFOLIO_PRESENTATION.md)
 - [Optional isolated VM lab](docs/VM_LAB.md)
+- [VM readiness checklist](docs/VM_READINESS_CHECKLIST.md)
 - [Security policy](SECURITY.md)
 
 Licensed under the [MIT License](LICENSE).

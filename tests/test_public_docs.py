@@ -13,6 +13,7 @@ PUBLIC_DOCS = [
     ROOT / "docs" / "TUNING_GUIDE.md",
     ROOT / "docs" / "VALIDATION.md",
     ROOT / "docs" / "VM_LAB.md",
+    ROOT / "docs" / "VM_READINESS_CHECKLIST.md",
     ROOT / "docs" / "PORTFOLIO_PRESENTATION.md",
 ]
 
@@ -48,6 +49,22 @@ class PublicDocumentationTests(unittest.TestCase):
             with self.subTest(key=detection["key"]):
                 self.assertIn(detection["key"], catalog)
                 self.assertIn(detection["title"], catalog)
+
+    def test_each_detection_has_a_playbook(self) -> None:
+        import json
+
+        manifest = json.loads((ROOT / "rules" / "manifest.json").read_text(encoding="utf-8"))
+        playbook_dir = ROOT / "docs" / "playbooks"
+        playbooks = {path.name for path in playbook_dir.glob("AUTH-*.md")}
+
+        self.assertEqual(len(playbooks), 5)
+        for detection in manifest["detections"]:
+            expected_prefix = detection["key"]
+            with self.subTest(key=detection["key"]):
+                self.assertTrue(
+                    any(name.startswith(expected_prefix) for name in playbooks),
+                    f"Missing playbook for {detection['key']}",
+                )
 
     def test_tuning_guide_covers_visible_tuning_cases(self) -> None:
         import json
@@ -98,6 +115,14 @@ class PublicDocumentationTests(unittest.TestCase):
         self.assertIn("auth_003_success_after_failures.spl", text)
         self.assertIn("auth_005_privileged_remote_logon.spl", text)
         self.assertIn("reviewed compatibility", text)
+
+    def test_vm_checklist_keeps_changes_explicit(self) -> None:
+        text = (ROOT / "docs" / "VM_READINESS_CHECKLIST.md").read_text(encoding="utf-8")
+
+        self.assertIn("uv run authlab vm-check", text)
+        self.assertIn("No offensive tools", text)
+        self.assertIn("Do not commit `.evtx`", text)
+        self.assertIn("internal-only", text)
 
 
 if __name__ == "__main__":

@@ -48,3 +48,8 @@ repository build.
 Run `uv run authlab vm-check` to refresh the read-only readiness artifact in
 `artifacts/vm-readiness.json`. Use `VM_EVIDENCE_TEMPLATE.json` as the public
 contract for sanitized validation notes.
+
+Before enabling a hypervisor or creating a VM, complete
+[`VM_READINESS_CHECKLIST.md`](VM_READINESS_CHECKLIST.md). The checklist keeps
+the VM phase explicit, reversible and separate from this repository's normal
+test pipeline.

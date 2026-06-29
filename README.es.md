@@ -41,7 +41,8 @@ versiones.
 3. Ejecuta `uv run authlab all` para regenerar validación, conversión SPL e
    informes.
 4. Abre `reports/latest/report.es.html` para ver la matriz de validación.
-5. Lee `docs/TUNING_GUIDE.md` para comprobar cómo se tratan falsos positivos
+5. Lee los playbooks por regla en `docs/playbooks/`.
+6. Lee `docs/TUNING_GUIDE.md` para comprobar cómo se tratan falsos positivos
    sin ocultar el comportamiento detectado.
 
 ## Comandos
@@ -52,6 +53,8 @@ authlab convert --backend splunk Convierte reglas compatibles a Splunk SPL
 authlab report                   Genera informes en inglés y español
 authlab audit                    Rechaza artefactos privados o inseguros
 authlab vm-check                 Comprueba la VM sin modificar Windows
+authlab list-rules               Lista detecciones y playbooks enlazados
+authlab explain AUTH-003         Explica una detección para revisión o entrevista
 authlab all                      Ejecuta auditoría, validación, conversión e informes
 ```
 
@@ -67,9 +70,11 @@ incluye herramientas ofensivas ni datos de producción.
 ## Documentación técnica
 
 - [Detection catalog](docs/DETECTION_CATALOG.md)
+- [Per-rule playbooks](docs/playbooks/)
 - [Validation and tuning](docs/VALIDATION.md)
 - [Tuning guide](docs/TUNING_GUIDE.md)
 - [Data sources](docs/DATA_SOURCES.md)
+- [VM readiness checklist](docs/VM_READINESS_CHECKLIST.md)
 
 ## Presentación
 

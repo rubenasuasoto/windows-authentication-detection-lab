@@ -4,13 +4,13 @@ This catalog summarizes the five primary detections in the lab. The rules stay
 in Sigma status `test` until they are validated in an authorized environment
 with local baselines.
 
-| ID | Rule | Events | Window and threshold | ATT&CK | Level |
+| ID | Rule | Events | Window and threshold | ATT&CK | Playbook |
 |---|---|---|---|---|---|
-| AUTH-001 | Failed Logon Burst From One Source | 4625 | 5 events in 5 minutes per source and computer | T1110.001 | medium |
-| AUTH-002 | Failed Logons Across Multiple Accounts | 4625 | 4 distinct users in 10 minutes per source and computer | T1110.003 | medium |
-| AUTH-003 | Successful Logon After Repeated Failures | 4625, 4624 | 3 failures followed by success in 10 minutes for the same user and source | T1078 | high |
-| AUTH-004 | Account Lockout Burst | 4740 | 3 lockouts in 15 minutes per caller and computer | Operational anomaly | medium |
-| AUTH-005 | Remote Logon Followed By Special Privileges | 4624, 4672 | Remote or network logon followed by privileges in 2 minutes for the same logon ID | T1078 | high |
+| AUTH-001 | Failed Logon Burst From One Source | 4625 | 5 events in 5 minutes per source and computer | T1110.001 | [Triage](playbooks/AUTH-001_failed_logon_burst.md) |
+| AUTH-002 | Failed Logons Across Multiple Accounts | 4625 | 4 distinct users in 10 minutes per source and computer | T1110.003 | [Triage](playbooks/AUTH-002_multiple_accounts.md) |
+| AUTH-003 | Successful Logon After Repeated Failures | 4625, 4624 | 3 failures followed by success in 10 minutes for the same user and source | T1078 | [Triage](playbooks/AUTH-003_success_after_failures.md) |
+| AUTH-004 | Account Lockout Burst | 4740 | 3 lockouts in 15 minutes per caller and computer | Operational anomaly | [Triage](playbooks/AUTH-004_account_lockout_burst.md) |
+| AUTH-005 | Remote Logon Followed By Special Privileges | 4624, 4672 | Remote or network logon followed by privileges in 2 minutes for the same logon ID | T1078 | [Triage](playbooks/AUTH-005_privileged_remote_logon.md) |
 
 ## Analyst notes
 
