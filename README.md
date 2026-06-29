@@ -68,6 +68,7 @@ in an authorized target environment before operational use.
 - [Architecture](docs/ARCHITECTURE.md)
 - [Data sources](docs/DATA_SOURCES.md)
 - [Validation and tuning](docs/VALIDATION.md)
+- [Portfolio presentation guide](docs/PORTFOLIO_PRESENTATION.md)
 - [Optional isolated VM lab](docs/VM_LAB.md)
 - [Security policy](SECURITY.md)
 

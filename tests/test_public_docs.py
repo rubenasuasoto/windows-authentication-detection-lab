@@ -1,0 +1,53 @@
+import re
+import unittest
+
+from authlab.paths import ROOT
+
+PUBLIC_DOCS = [
+    ROOT / "README.md",
+    ROOT / "README.es.md",
+    ROOT / "SECURITY.md",
+    ROOT / "docs" / "ARCHITECTURE.md",
+    ROOT / "docs" / "DATA_SOURCES.md",
+    ROOT / "docs" / "VALIDATION.md",
+    ROOT / "docs" / "VM_LAB.md",
+    ROOT / "docs" / "PORTFOLIO_PRESENTATION.md",
+]
+
+
+class PublicDocumentationTests(unittest.TestCase):
+    def test_public_docs_are_utf8_without_mojibake(self) -> None:
+        bad_markers = ("Ã", "Â", "�")
+        for path in PUBLIC_DOCS:
+            text = path.read_text(encoding="utf-8")
+            with self.subTest(path=path.name):
+                self.assertFalse(any(marker in text for marker in bad_markers))
+
+    def test_readme_links_point_to_existing_files(self) -> None:
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        links = re.findall(r"\[[^\]]+\]\(([^)]+)\)", readme)
+        local_links = [link for link in links if not link.startswith(("http://", "https://"))]
+
+        self.assertIn("docs/PORTFOLIO_PRESENTATION.md", local_links)
+        for link in local_links:
+            target = ROOT / link.split("#", 1)[0]
+            with self.subTest(link=link):
+                self.assertTrue(target.exists(), f"Broken README link: {link}")
+
+    def test_portfolio_guide_keeps_defensive_scope_visible(self) -> None:
+        text = (ROOT / "docs" / "PORTFOLIO_PRESENTATION.md").read_text(encoding="utf-8")
+
+        self.assertIn("synthetic JSON events", text)
+        self.assertIn("documentation IP ranges", text)
+        self.assertIn("It is not a production SIEM deployment", text)
+        self.assertIn("offensive simulations", text)
+
+    def test_spanish_readme_links_portfolio_guide(self) -> None:
+        text = (ROOT / "README.es.md").read_text(encoding="utf-8")
+
+        self.assertIn("Presentación", text)
+        self.assertIn("docs/PORTFOLIO_PRESENTATION.md", text)
+
+
+if __name__ == "__main__":
+    unittest.main()

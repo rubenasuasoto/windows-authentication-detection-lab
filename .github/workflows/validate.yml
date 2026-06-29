@@ -33,8 +33,6 @@ jobs:
       - name: Check committed reports are current
         run: git diff --exit-code -- reports/latest
       - name: Scan for committed secrets
-        run: uv run detect-secrets scan --baseline .secrets.baseline
-      - name: Reject new secret findings
-        run: git diff --exit-code -- .secrets.baseline
+        run: uv run detect-secrets-hook --baseline .secrets.baseline $(git ls-files)
       - name: Audit Python dependencies
         run: uv run pip-audit --skip-editable

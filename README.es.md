@@ -52,3 +52,9 @@ reglas conservan el estado `test` hasta validarse en un entorno autorizado.
 La [fase opcional de VM aislada](docs/VM_LAB.md) validará la telemetría real de
 Windows mediante cuentas ficticias y acciones administrativas normales. No
 incluye herramientas ofensivas ni datos de producción.
+
+## Presentación
+
+La guía [Portfolio presentation guide](docs/PORTFOLIO_PRESENTATION.md) resume
+cómo enseñar el proyecto en GitHub, LinkedIn o entrevistas sin exagerar su
+alcance operativo.
