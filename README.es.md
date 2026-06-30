@@ -122,5 +122,6 @@ alcance operativo.
 ## Release
 
 La version `0.1.0` esta definida en `pyproject.toml`. Antes de crear el tag
-publico, usa [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md) y anade el
-badge de GitHub Actions solo cuando la URL remota sea estable.
+publico, usa [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md). El badge
+de GitHub Actions, la demo publica y la documentacion GitBook ya estan
+enlazados para revision externa.

@@ -157,6 +157,8 @@ class PublicDocumentationTests(unittest.TestCase):
         self.assertIn("git tag -a v0.1.0", text)
         self.assertIn("workflow badge", text)
         self.assertIn("synthetic data", text)
+        self.assertIn("static and self-contained", text)
+        self.assertIn("public GitBook playbook URLs", text)
 
     def test_validation_doc_lists_splunk_outputs(self) -> None:
         text = (ROOT / "docs" / "VALIDATION.md").read_text(encoding="utf-8")

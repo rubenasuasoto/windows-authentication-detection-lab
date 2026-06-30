@@ -48,8 +48,8 @@ conversion, an interactive local demo, reports and safety checks.
   observable facts, impact and next steps.
 - I added a local mini-SOC demo so reviewers can select a scenario, inspect
   synthetic Windows events and see why the rule alerts or stays quiet.
-- I prepared the demo for static GitHub Pages publishing so reviewers can open
-  it without extra services once Pages is enabled.
+- I published the demo through static GitHub Pages so reviewers can open it
+  without a backend, login or local setup.
 - I kept the lab safe for publication: no EVTX files, credentials, binaries,
   memory access, production paths or offensive simulations.
 

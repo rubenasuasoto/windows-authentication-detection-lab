@@ -132,7 +132,8 @@ in an authorized target environment before operational use.
 ## Release readiness
 
 Version `0.1.0` is defined in `pyproject.toml`. Before tagging a public release,
-use [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md) and add the GitHub
-workflow badge only after the remote repository URL is stable.
+use [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md). The GitHub workflow
+badge, public demo and GitBook documentation are already linked for reviewer
+access.
 
 Licensed under the [MIT License](LICENSE).
