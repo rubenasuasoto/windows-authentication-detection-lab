@@ -14,6 +14,7 @@ SCOPE_NOTICE = (
     "Synthetic lab only. No production logs, credentials, malware, offensive "
     "simulations or host-changing actions."
 )
+GITBOOK_BASE_URL = "https://2dam-7.gitbook.io/window-auth/"
 
 
 def _narrative_parts(rule_id: str) -> dict[str, str]:
@@ -38,8 +39,9 @@ def _narrative_parts(rule_id: str) -> dict[str, str]:
     return parts
 
 
-def _relative_from_demo(path: str) -> str:
-    return f"../../{path}"
+def _gitbook_playbook_href(path: str) -> str:
+    slug = Path(path).stem.lower()
+    return f"{GITBOOK_BASE_URL}playbooks/{slug}"
 
 
 def _demo_payload() -> dict[str, Any]:
@@ -59,7 +61,8 @@ def _demo_payload() -> dict[str, Any]:
             "severity_reason": detection["severity_reason"],
             "tuning": detection["tuning"],
             "playbook": playbook_path(rule_id),
-            "playbook_href": _relative_from_demo(playbook_path(rule_id)),
+            "playbook_href": _gitbook_playbook_href(playbook_path(rule_id)),
+            "playbook_label": f"Open {rule_id} playbook in GitBook",
             "narrative": _narrative_parts(rule_id),
         }
 
@@ -188,7 +191,7 @@ def _html(payload: dict[str, Any]) -> str:
     <p class="notice">{html.escape(SCOPE_NOTICE)}</p>
     <div class="reviewer-path">
       <strong>For reviewers: 3-minute guided path</strong>
-      <span>Start with AUTH-003-POS, inspect the matched fields, open the playbook, then compare with the validation report.</span>
+      <span>Start with AUTH-003-POS, inspect the matched fields, open the GitBook playbook, then compare with the validation report.</span>
     </div>
   </header>
   <main>
@@ -383,7 +386,7 @@ def _html(payload: dict[str, Any]) -> str:
       setText(els.threshold, detection.threshold);
       setText(els.severity, detection.severity_reason);
       setText(els.fields, selected.matched_fields.join(', '));
-      setText(els.playbook, detection.playbook);
+      setText(els.playbook, detection.playbook_label);
       els.playbook.href = detection.playbook_href;
       renderNarrative(detection);
       renderEvents(selected.events);

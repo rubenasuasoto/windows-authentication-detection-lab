@@ -1,6 +1,6 @@
 import unittest
 
-from authlab.demo import SCOPE_NOTICE, build_demo
+from authlab.demo import GITBOOK_BASE_URL, SCOPE_NOTICE, build_demo
 from authlab.paths import REPORTS_DIR
 
 
@@ -28,10 +28,9 @@ class DemoTests(unittest.TestCase):
         self.assertIn("Synthetic lab only", self.html)
         self.assertIn("No production logs", self.html)
 
-    def test_demo_is_self_contained_and_local_only(self) -> None:
+    def test_demo_does_not_load_external_resources(self) -> None:
         forbidden = (
             "<script src",
-            "https://",
             "http://",
             "<form",
             'type="file"',
@@ -42,18 +41,28 @@ class DemoTests(unittest.TestCase):
         for marker in forbidden:
             with self.subTest(marker=marker):
                 self.assertNotIn(marker, self.lower_html)
+        external_urls = [
+            value
+            for value in self.html.split('"')
+            if value.startswith(("https://", "http://"))
+        ]
+        self.assertTrue(external_urls)
+        for url in external_urls:
+            with self.subTest(url=url):
+                self.assertTrue(url.startswith(GITBOOK_BASE_URL))
 
     def test_demo_links_playbooks_and_report(self) -> None:
         self.assertIn("<a", self.html)
         for playbook in (
-            "../../docs/playbooks/AUTH-001_failed_logon_burst.md",
-            "../../docs/playbooks/AUTH-002_multiple_accounts.md",
-            "../../docs/playbooks/AUTH-003_success_after_failures.md",
-            "../../docs/playbooks/AUTH-004_account_lockout_burst.md",
-            "../../docs/playbooks/AUTH-005_privileged_remote_logon.md",
+            "https://2dam-7.gitbook.io/window-auth/playbooks/auth-001_failed_logon_burst",
+            "https://2dam-7.gitbook.io/window-auth/playbooks/auth-002_multiple_accounts",
+            "https://2dam-7.gitbook.io/window-auth/playbooks/auth-003_success_after_failures",
+            "https://2dam-7.gitbook.io/window-auth/playbooks/auth-004_account_lockout_burst",
+            "https://2dam-7.gitbook.io/window-auth/playbooks/auth-005_privileged_remote_logon",
         ):
             with self.subTest(playbook=playbook):
                 self.assertIn(playbook, self.html)
+        self.assertIn("Open AUTH-003 playbook in GitBook", self.html)
 
     def test_demo_exposes_guided_soc_controls(self) -> None:
         for expected in (
