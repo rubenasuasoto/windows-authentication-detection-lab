@@ -1,5 +1,7 @@
 # Windows Authentication Detection Lab
 
+[![Validate detection lab](https://github.com/rubenasuasoto/windows-authentication-detection-lab/actions/workflows/validate.yml/badge.svg)](https://github.com/rubenasuasoto/windows-authentication-detection-lab/actions/workflows/validate.yml)
+
 [Versión en español](README.es.md)
 
 A safe, reproducible detection-engineering portfolio project built around five
