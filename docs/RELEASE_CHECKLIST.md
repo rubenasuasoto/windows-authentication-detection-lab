@@ -19,6 +19,10 @@ portfolio scope explicit and avoids claims beyond the synthetic lab.
 - [ ] Confirm all examples use synthetic JSON events.
 - [ ] Confirm `reports/latest/demo.html` is local-only and uses no external
       assets, forms, uploads or network calls.
+- [ ] Confirm GitHub Pages is configured to deploy from GitHub Actions.
+- [ ] Confirm the published demo opens:
+      `https://rubenasuasoto.github.io/windows-authentication-detection-lab/reports/latest/demo.html`.
+- [ ] Confirm playbook and validation report links work from the published demo.
 - [ ] Confirm docs use fictional identities and documentation IP ranges only.
 - [ ] Confirm no `.evtx`, screenshots with private data, credentials, tokens,
       binaries, memory dumps or production logs are committed.
@@ -31,6 +35,7 @@ portfolio scope explicit and avoids claims beyond the synthetic lab.
 
 - [ ] Push the repository to GitHub.
 - [ ] Confirm the validation workflow passes on Linux and Windows.
+- [ ] Confirm the GitHub Pages workflow publishes the static demo site.
 - [ ] Add the workflow badge to `README.md` after the remote URL is stable.
 - [ ] Create an annotated tag: `git tag -a v0.1.0 -m "v0.1.0"`.
 - [ ] Push the tag: `git push origin v0.1.0`.

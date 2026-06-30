@@ -43,10 +43,27 @@ class DemoTests(unittest.TestCase):
             with self.subTest(marker=marker):
                 self.assertNotIn(marker, self.lower_html)
 
+    def test_demo_links_playbooks_and_report(self) -> None:
+        self.assertIn("<a", self.html)
+        self.assertIn('href="report.en.html"', self.html)
+        for playbook in (
+            "../../docs/playbooks/AUTH-001_failed_logon_burst.md",
+            "../../docs/playbooks/AUTH-002_multiple_accounts.md",
+            "../../docs/playbooks/AUTH-003_success_after_failures.md",
+            "../../docs/playbooks/AUTH-004_account_lockout_burst.md",
+            "../../docs/playbooks/AUTH-005_privileged_remote_logon.md",
+        ):
+            with self.subTest(playbook=playbook):
+                self.assertIn(playbook, self.html)
+
     def test_demo_exposes_guided_soc_controls(self) -> None:
         for expected in (
             "ruleSelect",
             "caseSelect",
+            "For reviewers: 3-minute guided path",
+            "Previous case",
+            "Next case",
+            "Open validation report",
             "Event timeline",
             "Analyst narrative",
             "Matched fields",

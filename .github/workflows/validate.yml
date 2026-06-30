@@ -29,7 +29,9 @@ jobs:
       - name: Test
         run: uv run pytest --cov=authlab --cov-report=term-missing
       - name: Run complete lab
-        run: uv run authlab all
+        run: |
+          uv run authlab all
+          uv run authlab demo
       - name: Check committed reports are current
         run: git diff --exit-code -- reports/latest
       - name: Scan for committed secrets

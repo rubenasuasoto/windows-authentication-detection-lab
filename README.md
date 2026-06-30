@@ -14,12 +14,19 @@ SPL, and publishes a bilingual validation report.
 
 ![Validation report preview](docs/assets/report-preview.png)
 
+## Live demo
+
+Open the guided mini-SOC demo on GitHub Pages:
+[windows-authentication-detection-lab demo](https://rubenasuasoto.github.io/windows-authentication-detection-lab/reports/latest/demo.html).
+
+The same demo can be rebuilt locally with `uv run authlab demo --open`.
+
 ## What this demonstrates
 
 - Sigma rule and correlation design.
 - Positive, negative, boundary and tuning-oriented tests.
 - Transparent handling of false positives and backend limitations.
-- Reproducible validation and reporting through CI.
+- Reproducible validation, reporting and GitHub Pages demo publishing through CI.
 - ATT&CK-aligned detection reasoning without unsafe activity.
 - Dependency and secret auditing on every proposed change.
 
@@ -51,7 +58,7 @@ intentionally ignored by Git.
 
 ## How to review this project
 
-1. Run `uv run authlab demo --open` and walk through the guided synthetic cases.
+1. Open the GitHub Pages demo or run `uv run authlab demo --open` locally.
 2. Start with `rules/manifest.json` and the five Sigma files in `rules/`.
 3. Inspect `tests/fixtures/scenarios.json` to see the positive, negative,
    boundary and tuning cases.

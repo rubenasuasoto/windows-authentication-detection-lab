@@ -38,6 +38,10 @@ def _narrative_parts(rule_id: str) -> dict[str, str]:
     return parts
 
 
+def _relative_from_demo(path: str) -> str:
+    return f"../../{path}"
+
+
 def _demo_payload() -> dict[str, Any]:
     manifest = load_manifest()
     result_by_case = {result["case_id"]: result for result in evaluate_cases()}
@@ -55,6 +59,7 @@ def _demo_payload() -> dict[str, Any]:
             "severity_reason": detection["severity_reason"],
             "tuning": detection["tuning"],
             "playbook": playbook_path(rule_id),
+            "playbook_href": _relative_from_demo(playbook_path(rule_id)),
             "narrative": _narrative_parts(rule_id),
         }
 
@@ -128,7 +133,19 @@ def _html(payload: dict[str, Any]) -> str:
     code {{ color:var(--blue); }}
     main {{ max-width:1220px; margin:0 auto; padding:18px; display:grid; gap:14px; }}
     section {{ min-width:0; border:1px solid var(--line); background:var(--panel); border-radius:8px; padding:16px; }}
+    a {{ color:var(--blue); text-decoration:none; }}
+    a:hover {{ text-decoration:underline; }}
+    button {{
+      color:var(--ink); background:#101316; border:1px solid var(--line); border-radius:6px;
+      padding:9px 11px; font:inherit; cursor:pointer;
+    }}
+    button:hover {{ border-color:var(--accent); }}
     .notice {{ margin-top:12px; color:#ffe7b0; border-left:3px solid var(--amber); padding-left:10px; }}
+    .reviewer-path {{
+      margin-top:12px; display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+      color:var(--muted);
+    }}
+    .reviewer-path strong {{ color:var(--ink); }}
     .metrics {{ display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }}
     .metric {{ background:var(--panel2); border:1px solid var(--line); border-radius:7px; padding:12px; min-height:76px; }}
     .metric strong {{ display:block; font-size:24px; color:var(--accent); }}
@@ -157,6 +174,7 @@ def _html(payload: dict[str, Any]) -> str:
     .narrative div {{ border-left:2px solid var(--violet); padding-left:10px; }}
     .narrative strong {{ display:block; margin-bottom:2px; }}
     .route {{ color:var(--blue); overflow-wrap:anywhere; }}
+    .actions {{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }}
     @media (max-width:860px) {{
       .metrics,.controls,.grid {{ grid-template-columns:minmax(0,1fr); }}
       h1 {{ font-size:23px; }}
@@ -168,6 +186,10 @@ def _html(payload: dict[str, Any]) -> str:
     <h1>{html.escape(title)}</h1>
     <p>Guided, local-only walkthrough for synthetic Windows authentication detections.</p>
     <p class="notice">{html.escape(SCOPE_NOTICE)}</p>
+    <div class="reviewer-path">
+      <strong>For reviewers: 3-minute guided path</strong>
+      <span>Start with AUTH-003-POS, inspect the matched fields, open the playbook, then compare with the validation report.</span>
+    </div>
   </header>
   <main>
     <section class="metrics" aria-label="Demo metrics">
@@ -196,7 +218,13 @@ def _html(payload: dict[str, Any]) -> str:
           <span>Threshold</span><span id="threshold"></span>
           <span>Severity reason</span><span id="severity"></span>
           <span>Matched fields</span><span id="fields"></span>
-          <span>Playbook</span><span class="route" id="playbook"></span>
+          <span>Playbook</span><a class="route" id="playbook" href="#"></a>
+        </div>
+        <div class="actions">
+          <button type="button" id="previousCase">Previous case</button>
+          <button type="button" id="nextCase">Next case</button>
+          <a class="route" href="report.en.html">Open validation report</a>
+          <a class="route" href="../../README.md">Open README</a>
         </div>
       </section>
       <section>
@@ -237,6 +265,8 @@ def _html(payload: dict[str, Any]) -> str:
       severity: document.getElementById('severity'),
       fields: document.getElementById('fields'),
       playbook: document.getElementById('playbook'),
+      previousCase: document.getElementById('previousCase'),
+      nextCase: document.getElementById('nextCase'),
       narrative: document.getElementById('narrative'),
       eventsBody: document.getElementById('eventsBody')
     }};
@@ -286,6 +316,20 @@ def _html(payload: dict[str, Any]) -> str:
         option.textContent = item.case_id + ' | ' + item.category;
         els.caseSelect.appendChild(option);
       }});
+    }}
+
+    function selectedCaseIndex() {{
+      return data.cases.findIndex((item) => item.case_id === els.caseSelect.value);
+    }}
+
+    function selectCaseByIndex(index) {{
+      const total = data.cases.length;
+      const normalized = (index + total) % total;
+      const selected = data.cases[normalized];
+      els.ruleSelect.value = selected.rule_id;
+      renderCaseOptions();
+      els.caseSelect.value = selected.case_id;
+      renderCase();
     }}
 
     function renderNarrative(detection) {{
@@ -342,6 +386,7 @@ def _html(payload: dict[str, Any]) -> str:
       setText(els.severity, detection.severity_reason);
       setText(els.fields, selected.matched_fields.join(', '));
       setText(els.playbook, detection.playbook);
+      els.playbook.href = detection.playbook_href;
       renderNarrative(detection);
       renderEvents(selected.events);
     }}
@@ -361,6 +406,8 @@ def _html(payload: dict[str, Any]) -> str:
       renderCase();
     }});
     els.caseSelect.addEventListener('change', renderCase);
+    els.previousCase.addEventListener('click', () => selectCaseByIndex(selectedCaseIndex() - 1));
+    els.nextCase.addEventListener('click', () => selectCaseByIndex(selectedCaseIndex() + 1));
   </script>
 </body>
 </html>
