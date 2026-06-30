@@ -11,6 +11,8 @@ GitBook while the source of truth stays in this GitHub repository.
 
 - Open the public mini-SOC demo:
   https://rubenasuasoto.github.io/windows-authentication-detection-lab/reports/latest/demo.html
+- Read the public GitBook documentation and playbooks:
+  https://2dam-7.gitbook.io/window-auth/
 - Or open the local mini-SOC demo with `uv run authlab demo --open`.
 - Review the five detections in [Detection catalog](DETECTION_CATALOG.md).
 - Walk through analyst response steps in [Playbooks](playbooks/README.md).
@@ -22,7 +24,7 @@ GitBook while the source of truth stays in this GitHub repository.
 
 1. Open the demo and select `AUTH-003-POS`.
 2. Compare expected and observed results for the synthetic event sequence.
-3. Open the linked playbook and explain what an analyst would check next.
+3. Open the GitBook playbook and explain what an analyst would check next.
 4. Open the validation documentation to show pass/fail evidence and limitations.
 5. Close by stating that the lab is synthetic and not a production SIEM.
 
@@ -45,3 +47,7 @@ https://rubenasuasoto.github.io/windows-authentication-detection-lab/reports/lat
 
 GitBook is intended for polished documentation and playbook review. It does not
 replace the local demo, validation commands or CI evidence.
+
+Public GitBook URL:
+
+https://2dam-7.gitbook.io/window-auth/

@@ -26,6 +26,8 @@ PUBLIC_DOCS = [
 
 
 class PublicDocumentationTests(unittest.TestCase):
+    GITBOOK_URL = "https://2dam-7.gitbook.io/window-auth/"
+
     def test_public_docs_are_utf8_without_mojibake(self) -> None:
         bad_markers = ("Ã", "Â", "�")
         for path in PUBLIC_DOCS:
@@ -78,6 +80,7 @@ class PublicDocumentationTests(unittest.TestCase):
     def test_gitbook_navigation_covers_playbooks(self) -> None:
         summary = (ROOT / "docs" / "SUMMARY.md").read_text(encoding="utf-8")
         setup = (ROOT / "docs" / "GITBOOK_SETUP.md").read_text(encoding="utf-8")
+        setup_es = (ROOT / "docs" / "GITBOOK_SETUP.es.md").read_text(encoding="utf-8")
         config = (ROOT / ".gitbook.yaml").read_text(encoding="utf-8")
 
         self.assertIn("root: ./docs/", config)
@@ -85,6 +88,8 @@ class PublicDocumentationTests(unittest.TestCase):
         self.assertIn("summary: SUMMARY.md", config)
         self.assertIn("Branch: `main`", setup)
         self.assertIn("GitHub -> GitBook", setup)
+        self.assertIn(self.GITBOOK_URL, setup)
+        self.assertIn(self.GITBOOK_URL, setup_es)
         for detection_id in ("AUTH-001", "AUTH-002", "AUTH-003", "AUTH-004", "AUTH-005"):
             with self.subTest(detection_id=detection_id):
                 self.assertIn(detection_id, summary)
@@ -187,6 +192,7 @@ class PublicDocumentationTests(unittest.TestCase):
         self.assertIn("reports/latest/demo.html", text)
         self.assertIn("local mini-SOC demo", text)
         self.assertIn("Three-minute reviewer path", text)
+        self.assertIn(self.GITBOOK_URL, text)
 
     def test_public_docs_explain_demo_access(self) -> None:
         expected = (
@@ -199,6 +205,8 @@ class PublicDocumentationTests(unittest.TestCase):
 
         self.assertIn("uv run authlab demo --open", english)
         self.assertIn("uv run authlab demo --open", spanish)
+        self.assertIn(self.GITBOOK_URL, english)
+        self.assertIn(self.GITBOOK_URL, spanish)
         self.assertIn(expected, english)
         self.assertIn(expected, spanish)
         self.assertIn(expected, release)

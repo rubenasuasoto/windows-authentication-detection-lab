@@ -13,24 +13,24 @@ conversion, an interactive local demo, reports and safety checks.
 
 ## What to show first
 
-1. Local demo: run `uv run authlab demo --open`, or open
-   `reports/latest/demo.html` after generation.
+1. Public demo:
+   `https://rubenasuasoto.github.io/windows-authentication-detection-lab/reports/latest/demo.html`.
 2. `rules/`: five readable Sigma detections with ATT&CK mapping and tuning
    notes.
-3. `tests/fixtures/scenarios.json`: positive, negative, boundary and tuning
+3. Public GitBook playbooks: `https://2dam-7.gitbook.io/window-auth/`.
+4. `tests/fixtures/scenarios.json`: positive, negative, boundary and tuning
    cases.
-4. `reports/latest/report.en.html`: the generated validation matrix.
-5. `docs/ALERT_NARRATIVES.md`: examples of analyst-facing alert summaries.
-6. `.github/workflows/validate.yml`: CI that runs linting, tests, conversion,
+5. `reports/latest/report.en.html`: the generated validation matrix.
+6. `docs/ALERT_NARRATIVES.md`: examples of analyst-facing alert summaries.
+7. `.github/workflows/validate.yml`: CI that runs linting, tests, conversion,
    reporting, secret scanning and dependency audit.
 
 ## Three-minute reviewer path
 
-1. Open the local demo with `uv run authlab demo --open`, or the published
-   GitHub Pages demo after release validation.
+1. Open the public GitHub Pages demo.
 2. Keep the default `AUTH-003-POS` scenario and show the failed-logon sequence
    followed by success.
-3. Open the playbook link from the demo to show triage questions.
+3. Open the GitBook playbook for `AUTH-003` to show triage questions.
 4. Use `Next case` to compare with a negative or boundary case.
 5. Open `reports/latest/report.en.html` separately to show the full matrix and
    limitations.

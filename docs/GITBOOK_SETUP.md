@@ -7,6 +7,7 @@ playbooks without browsing raw Markdown files in GitHub.
 
 - Repository: `rubenasuasoto/windows-authentication-detection-lab`.
 - Branch: `main`.
+- Public URL: `https://2dam-7.gitbook.io/window-auth/`.
 - GitBook sync direction for first import: `GitHub -> GitBook`.
 - Content root: configured by `.gitbook.yaml` as `./docs/`.
 - First page: `README.md`.
@@ -49,8 +50,8 @@ Expected playbook pages:
 - Keep GitBook connected to the repository docs instead of editing duplicate
   copies manually.
 - Keep the synthetic lab notice visible in the overview and portfolio guide.
-- Add the public GitBook URL to `README.md` only after the space is live and
-  manually verified.
+- Keep the public GitBook URL in `README.md` only while the space remains live
+  and manually verified.
 
 ## Reviewer Path
 

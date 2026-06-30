@@ -26,6 +26,8 @@ portfolio scope explicit and avoids claims beyond the synthetic lab.
 - [ ] Confirm the GitBook space syncs from `main` using `docs/` as content
       root and renders `docs/SUMMARY.md`.
 - [ ] Confirm all five `AUTH-*` playbooks open from GitBook.
+- [ ] Confirm the public GitBook URL opens:
+      `https://2dam-7.gitbook.io/window-auth/`.
 - [ ] Confirm docs use fictional identities and documentation IP ranges only.
 - [ ] Confirm no `.evtx`, screenshots with private data, credentials, tokens,
       binaries, memory dumps or production logs are committed.

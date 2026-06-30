@@ -7,6 +7,7 @@ los playbooks sin navegar por Markdown crudo en GitHub.
 
 - Repositorio: `rubenasuasoto/windows-authentication-detection-lab`.
 - Rama: `main`.
+- URL publica: `https://2dam-7.gitbook.io/window-auth/`.
 - Direccion inicial de sincronizacion: `GitHub -> GitBook`.
 - Raiz de contenido: configurada por `.gitbook.yaml` como `./docs/`.
 - Primera pagina: `README.md`.
@@ -48,7 +49,7 @@ Playbooks esperados:
   credenciales, tokens, binarios ni volcados de memoria.
 - Mantén GitBook conectado al repositorio para evitar copias duplicadas.
 - Comprueba que el aviso de laboratorio sintetico sigue visible.
-- No añadas la URL publica al README hasta que el Space este publicado y
+- Manten la URL publica en el README solo mientras el Space siga publicado y
   verificado manualmente.
 
 ## Recorrido Para Empresa

@@ -20,6 +20,10 @@ Open the public guided mini-SOC demo:
 
 https://rubenasuasoto.github.io/windows-authentication-detection-lab/reports/latest/demo.html
 
+Read the polished GitBook documentation and playbooks:
+
+https://2dam-7.gitbook.io/window-auth/
+
 Open the guided mini-SOC demo locally:
 
 ```powershell
@@ -79,6 +83,9 @@ intentionally ignored by Git.
 8. Read `docs/TUNING_GUIDE.md` to see how false positives are handled without
    hiding the detection behavior.
 
+For an external reviewer, the shortest path is: public demo, `AUTH-003-POS`,
+GitBook playbook, then validation report.
+
 ## Commands
 
 ```text
@@ -110,6 +117,7 @@ in an authorized target environment before operational use.
 - [Alert narratives](docs/ALERT_NARRATIVES.md)
 - [Data sources](docs/DATA_SOURCES.md)
 - [Detection catalog](docs/DETECTION_CATALOG.md)
+- [Public GitBook documentation](https://2dam-7.gitbook.io/window-auth/)
 - [GitBook-ready documentation](docs/README.md)
 - [GitBook setup guide](docs/GITBOOK_SETUP.md)
 - [Per-rule playbooks](docs/playbooks/)
