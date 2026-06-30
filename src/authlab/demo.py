@@ -223,8 +223,6 @@ def _html(payload: dict[str, Any]) -> str:
         <div class="actions">
           <button type="button" id="previousCase">Previous case</button>
           <button type="button" id="nextCase">Next case</button>
-          <a class="route" href="report.en.html">Open validation report</a>
-          <a class="route" href="../../README.md">Open README</a>
         </div>
       </section>
       <section>

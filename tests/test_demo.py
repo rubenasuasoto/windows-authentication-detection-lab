@@ -45,7 +45,6 @@ class DemoTests(unittest.TestCase):
 
     def test_demo_links_playbooks_and_report(self) -> None:
         self.assertIn("<a", self.html)
-        self.assertIn('href="report.en.html"', self.html)
         for playbook in (
             "../../docs/playbooks/AUTH-001_failed_logon_burst.md",
             "../../docs/playbooks/AUTH-002_multiple_accounts.md",
@@ -63,7 +62,6 @@ class DemoTests(unittest.TestCase):
             "For reviewers: 3-minute guided path",
             "Previous case",
             "Next case",
-            "Open validation report",
             "Event timeline",
             "Analyst narrative",
             "Matched fields",
