@@ -66,8 +66,11 @@ authlab convert --backend splunk Convert supported rules to Splunk SPL
 authlab report                   Build English and Spanish reports
 authlab audit                    Reject unsafe or private artifacts
 authlab vm-check                 Inspect VM readiness without changing Windows
+authlab vm-plan                  Print the optional isolated VM validation plan
 authlab list-rules               List detections and linked playbooks
 authlab explain AUTH-003         Explain one detection for review or interviews
+authlab playbook AUTH-001        Print one detection playbook
+authlab narrative AUTH-001       Print one analyst-facing alert narrative
 authlab all                      Run audit, validation, conversion and reports
 ```
 
@@ -88,8 +91,15 @@ in an authorized target environment before operational use.
 - [Validation and tuning](docs/VALIDATION.md)
 - [Tuning guide](docs/TUNING_GUIDE.md)
 - [Portfolio presentation guide](docs/PORTFOLIO_PRESENTATION.md)
+- [Release checklist](docs/RELEASE_CHECKLIST.md)
 - [Optional isolated VM lab](docs/VM_LAB.md)
 - [VM readiness checklist](docs/VM_READINESS_CHECKLIST.md)
 - [Security policy](SECURITY.md)
+
+## Release readiness
+
+Version `0.1.0` is defined in `pyproject.toml`. Before tagging a public release,
+use [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md) and add the GitHub
+workflow badge only after the remote repository URL is stable.
 
 Licensed under the [MIT License](LICENSE).

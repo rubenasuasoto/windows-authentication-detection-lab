@@ -112,3 +112,38 @@ def write_vm_readiness(readiness: VMReadiness | None = None) -> dict[str, Any]:
         encoding="utf-8",
     )
     return payload
+
+
+def format_vm_plan() -> str:
+    return "\n".join(
+        [
+            "Optional isolated VM validation plan",
+            "",
+            "Scope",
+            "- Read-only planning command; no Windows features, networks or VMs are changed.",
+            "- Use disposable Windows evaluation systems with fictional identities only.",
+            "- Keep raw EVTX exports and screenshots with private data out of the repository.",
+            "",
+            "VM-A: local authentication telemetry",
+            "- Purpose: validate 4624, 4625 and 4672 field behavior with local accounts.",
+            "- Candidate detections: AUTH-001, AUTH-002, AUTH-003 and part of AUTH-005.",
+            "- Evidence to record: Windows edition/build, audit policy, normalized events, "
+            "rule result, pass/tune decision.",
+            "- Public evidence format: docs/VM_EVIDENCE_TEMPLATE.json with fictional users, "
+            "hosts and documentation IP ranges.",
+            "",
+            "VM-B: optional domain lockout telemetry",
+            "- Purpose: validate 4740 lockout fields only when a domain-style lab is approved.",
+            "- Candidate detections: AUTH-004.",
+            "- Evidence to record: caller computer field, affected account type, normalized "
+            "lockout events, pass/tune decision.",
+            "- Skip VM-B unless it can remain isolated and disposable.",
+            "",
+            "Exit criteria",
+            "- Synthetic fixtures still pass with uv run authlab all.",
+            "- Every tested rule has expected, observed and disposition recorded.",
+            "- Any mismatch becomes a tuning note or a reviewed rule update.",
+            "- No offensive tools, credential dumping tools, malware samples or production "
+            "data are used.",
+        ]
+    )

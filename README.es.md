@@ -54,8 +54,11 @@ authlab convert --backend splunk Convierte reglas compatibles a Splunk SPL
 authlab report                   Genera informes en inglés y español
 authlab audit                    Rechaza artefactos privados o inseguros
 authlab vm-check                 Comprueba la VM sin modificar Windows
+authlab vm-plan                  Imprime el plan opcional de validacion en VM
 authlab list-rules               Lista detecciones y playbooks enlazados
 authlab explain AUTH-003         Explica una detección para revisión o entrevista
+authlab playbook AUTH-001        Imprime un playbook de deteccion
+authlab narrative AUTH-001       Imprime una narrativa de alerta
 authlab all                      Ejecuta auditoría, validación, conversión e informes
 ```
 
@@ -76,6 +79,7 @@ incluye herramientas ofensivas ni datos de producción.
 - [Validation and tuning](docs/VALIDATION.md)
 - [Tuning guide](docs/TUNING_GUIDE.md)
 - [Data sources](docs/DATA_SOURCES.md)
+- [Release checklist](docs/RELEASE_CHECKLIST.md)
 - [VM readiness checklist](docs/VM_READINESS_CHECKLIST.md)
 
 ## Presentación
@@ -83,3 +87,9 @@ incluye herramientas ofensivas ni datos de producción.
 La guía [Portfolio presentation guide](docs/PORTFOLIO_PRESENTATION.md) resume
 cómo enseñar el proyecto en GitHub, LinkedIn o entrevistas sin exagerar su
 alcance operativo.
+
+## Release
+
+La version `0.1.0` esta definida en `pyproject.toml`. Antes de crear el tag
+publico, usa [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md) y anade el
+badge de GitHub Actions solo cuando la URL remota sea estable.

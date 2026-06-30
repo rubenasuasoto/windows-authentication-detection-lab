@@ -30,7 +30,7 @@
   </style>
 </head>
 <body>
-  <header><div><div><h1>Laboratorio de detección de autenticación</h1><p>Ingeniería de detección reproducible con telemetría sintética de Windows</p><span class="fingerprint">pack 0eb0cb6cc201</span></div><a href="report.en.html">English</a></div></header>
+  <header><div><div><h1>Laboratorio de detección de autenticación</h1><p>Ingeniería de detección reproducible con telemetría sintética de Windows</p><span class="fingerprint">pack 22bc77ef0e20</span></div><a href="report.en.html">English</a></div></header>
   <main>
     <section class="metrics">
       <div class="metric"><strong>5/5</strong><span>Reglas válidas</span></div>
@@ -42,36 +42,36 @@
         <article class="detection">
           <div class="detection-head"><span>AUTH-001</span><strong>Failed Logon Burst From One Source</strong></div>
           <p>5 events in 5 minutes per source and computer</p>
-          <div class="chips"><span>Events 4625</span><span>T1110.001</span></div>
-          <small>Baseline trusted scanners and identity infrastructure before adding exclusions.</small>
+          <div class="chips"><span>medium</span><span>P3</span><span>Events 4625</span><span>T1110.001</span></div>
+          <small>Repeated failures from one source are useful early signal but need ownership and scanner context before escalation. Tuning: Baseline trusted scanners and identity infrastructure before adding exclusions.</small>
         </article>
         
         <article class="detection">
           <div class="detection-head"><span>AUTH-002</span><strong>Failed Logons Across Multiple Accounts</strong></div>
           <p>4 distinct users in 10 minutes per source and computer</p>
-          <div class="chips"><span>Events 4625</span><span>T1110.003</span></div>
-          <small>Review shared gateways and authorized identity-testing systems.</small>
+          <div class="chips"><span>medium</span><span>P2</span><span>Events 4625</span><span>T1110.003</span></div>
+          <small>Failures across several accounts increase concern, especially when the source is not an approved gateway or test system. Tuning: Review shared gateways and authorized identity-testing systems.</small>
         </article>
         
         <article class="detection">
           <div class="detection-head"><span>AUTH-003</span><strong>Successful Logon After Repeated Failures</strong></div>
           <p>3 failures followed by success in 10 minutes for the same user and source</p>
-          <div class="chips"><span>Events 4625, 4624</span><span>T1078</span></div>
-          <small>Compare with password resets, user mistakes and approved support activity.</small>
+          <div class="chips"><span>high</span><span>P1</span><span>Events 4625, 4624</span><span>T1078</span></div>
+          <small>A success after repeated failures is a higher-confidence sequence that should be reviewed before broad tuning. Tuning: Compare with password resets, user mistakes and approved support activity.</small>
         </article>
         
         <article class="detection">
           <div class="detection-head"><span>AUTH-004</span><strong>Account Lockout Burst</strong></div>
           <p>3 lockouts in 15 minutes per caller and computer</p>
-          <div class="chips"><span>Events 4740</span><span>Operational</span></div>
-          <small>Treat as an operational anomaly; investigate stale services and machine accounts first.</small>
+          <div class="chips"><span>medium</span><span>P3</span><span>Events 4740</span><span>Operational</span></div>
+          <small>Lockout bursts can be operational noise or abuse pressure, so ownership and affected account type drive severity. Tuning: Treat as an operational anomaly; investigate stale services and machine accounts first.</small>
         </article>
         
         <article class="detection">
           <div class="detection-head"><span>AUTH-005</span><strong>Remote Logon Followed By Special Privileges</strong></div>
           <p>Remote or network logon followed by privileges in 2 minutes for the same logon ID</p>
-          <div class="chips"><span>Events 4624, 4672</span><span>T1078</span></div>
-          <small>Baseline approved administration paths, jump hosts and service identities.</small>
+          <div class="chips"><span>high</span><span>P1</span><span>Events 4624, 4672</span><span>T1078</span></div>
+          <small>Privileged remote sessions have higher impact and should be matched against approved administration paths. Tuning: Baseline approved administration paths, jump hosts and service identities.</small>
         </article>
         </div></section>
     <section><h2>Matriz de validación</h2><div class="table-wrap"><table><thead><tr><th>Case</th><th>Rule</th><th>Category</th><th>Expected</th><th>Observed</th><th>Result</th><th>Decision</th></tr></thead><tbody>

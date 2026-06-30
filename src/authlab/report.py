@@ -79,12 +79,13 @@ def _markdown(
         "",
         "## Detecciones" if spanish else "## Detections",
         "",
-        "| ID | Title | Events | Threshold | ATT&CK |",
-        "|---|---|---|---|---|",
+        "| ID | Title | Risk | Priority | Events | Threshold | ATT&CK |",
+        "|---|---|---|---|---|---|---|",
     ]
     for item in manifest["detections"]:
         lines.append(
-            f"| {item['key']} | {item['title']} | {', '.join(map(str, item['event_ids']))} | "
+            f"| {item['key']} | {item['title']} | {item['risk']} | "
+            f"{item['triage_priority']} | {', '.join(map(str, item['event_ids']))} | "
             f"{item['threshold']} | {', '.join(item['attack']) or 'Operational'} |"
         )
     lines.extend(
@@ -117,7 +118,10 @@ def _markdown(
         ]
     )
     for item in manifest["detections"]:
-        lines.append(f"- **{item['key']}**: {item['tuning']}")
+        lines.append(
+            f"- **{item['key']}** ({item['risk']}/{item['triage_priority']}): "
+            f"{item['severity_reason']} Tuning: {item['tuning']}"
+        )
     lines.extend(
         [
             "",
@@ -159,8 +163,8 @@ def _html_report(
         <article class="detection">
           <div class="detection-head"><span>{html.escape(item['key'])}</span><strong>{html.escape(item['title'])}</strong></div>
           <p>{html.escape(item['threshold'])}</p>
-          <div class="chips"><span>Events {', '.join(map(str, item['event_ids']))}</span><span>{html.escape(', '.join(item['attack']) or 'Operational')}</span></div>
-          <small>{html.escape(item['tuning'])}</small>
+          <div class="chips"><span>{html.escape(item['risk'])}</span><span>{html.escape(item['triage_priority'])}</span><span>Events {', '.join(map(str, item['event_ids']))}</span><span>{html.escape(', '.join(item['attack']) or 'Operational')}</span></div>
+          <small>{html.escape(item['severity_reason'])} Tuning: {html.escape(item['tuning'])}</small>
         </article>
         """
         for item in manifest["detections"]

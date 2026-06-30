@@ -16,6 +16,7 @@ PUBLIC_DOCS = [
     ROOT / "docs" / "VM_LAB.md",
     ROOT / "docs" / "VM_READINESS_CHECKLIST.md",
     ROOT / "docs" / "PORTFOLIO_PRESENTATION.md",
+    ROOT / "docs" / "RELEASE_CHECKLIST.md",
 ]
 
 
@@ -34,6 +35,7 @@ class PublicDocumentationTests(unittest.TestCase):
 
         self.assertIn("docs/DETECTION_CATALOG.md", local_links)
         self.assertIn("docs/PORTFOLIO_PRESENTATION.md", local_links)
+        self.assertIn("docs/RELEASE_CHECKLIST.md", local_links)
         self.assertIn("docs/TUNING_GUIDE.md", local_links)
         for link in local_links:
             target = ROOT / link.split("#", 1)[0]
@@ -109,6 +111,26 @@ class PublicDocumentationTests(unittest.TestCase):
                 self.assertIn(expected, english)
                 self.assertIn(expected, spanish)
 
+    def test_readmes_list_review_commands(self) -> None:
+        english = (ROOT / "README.md").read_text(encoding="utf-8")
+        spanish = (ROOT / "README.es.md").read_text(encoding="utf-8")
+
+        for expected in (
+            "authlab vm-plan",
+            "authlab playbook AUTH-001",
+            "authlab narrative AUTH-001",
+        ):
+            with self.subTest(expected=expected):
+                self.assertIn(expected, english)
+                self.assertIn(expected, spanish)
+
+    def test_release_checklist_keeps_tagging_manual(self) -> None:
+        text = (ROOT / "docs" / "RELEASE_CHECKLIST.md").read_text(encoding="utf-8")
+
+        self.assertIn("git tag -a v0.1.0", text)
+        self.assertIn("workflow badge", text)
+        self.assertIn("synthetic data", text)
+
     def test_validation_doc_lists_splunk_outputs(self) -> None:
         text = (ROOT / "docs" / "VALIDATION.md").read_text(encoding="utf-8")
 
@@ -141,6 +163,7 @@ class PublicDocumentationTests(unittest.TestCase):
         text = (ROOT / "docs" / "VM_READINESS_CHECKLIST.md").read_text(encoding="utf-8")
 
         self.assertIn("uv run authlab vm-check", text)
+        self.assertIn("uv run authlab vm-plan", text)
         self.assertIn("No offensive tools", text)
         self.assertIn("Do not commit `.evtx`", text)
         self.assertIn("internal-only", text)

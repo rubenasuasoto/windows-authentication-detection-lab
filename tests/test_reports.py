@@ -37,6 +37,14 @@ class ReportTests(unittest.TestCase):
         html = (REPORTS_DIR / "report.en.html").read_text(encoding="utf-8")
         self.assertIn("2 correlations use reviewed compatibility SPL", html)
 
+    def test_report_shows_triage_metadata(self) -> None:
+        report = (REPORTS_DIR / "report.en.md").read_text(encoding="utf-8")
+        self.assertIn("| ID | Title | Risk | Priority | Events | Threshold | ATT&CK |", report)
+        self.assertIn("| AUTH-003 | Successful Logon After Repeated Failures | high | P1 |", report)
+        self.assertIn("higher-confidence sequence", report)
+        html = (REPORTS_DIR / "report.en.html").read_text(encoding="utf-8")
+        self.assertIn(">high</span><span>P1</span>", html)
+
 
 if __name__ == "__main__":
     unittest.main()

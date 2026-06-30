@@ -61,6 +61,13 @@ def validate_rule_pack() -> list[RuleCheck]:
         path = RULES_DIR / detection["file"]
         errors: list[str] = []
         documents: list[dict[str, Any]] = []
+        for field in ("risk", "severity_reason", "triage_priority"):
+            if not detection.get(field):
+                errors.append(f"missing manifest field: {field}")
+        if detection.get("risk") not in {"low", "medium", "high"}:
+            errors.append("manifest risk must be low, medium or high")
+        if detection.get("triage_priority") not in {"P1", "P2", "P3", "P4"}:
+            errors.append("manifest triage_priority must be P1, P2, P3 or P4")
         if not path.is_file():
             errors.append("rule file is missing")
         else:

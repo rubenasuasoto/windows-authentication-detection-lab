@@ -7,6 +7,8 @@ Windows features, creates networks or collects raw logs.
 ## Host readiness
 
 - [ ] Run `uv run authlab vm-check` and save the generated readiness summary.
+- [ ] Run `uv run authlab vm-plan` and confirm VM-A/VM-B scope is still
+      appropriate.
 - [ ] Choose one reviewed hypervisor. Hyper-V is preferred on Windows Pro when
       available.
 - [ ] Confirm the VM network will be isolated or internal-only.

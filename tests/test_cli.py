@@ -45,6 +45,14 @@ class CliTests(unittest.TestCase):
         self.assertFalse(summary["changes_applied"])
         self.assertIn("providers", summary)
 
+    def test_vm_plan_prints_phases_without_host_changes(self) -> None:
+        exit_code, output = self._run_cli("vm-plan")
+
+        self.assertEqual(exit_code, 0)
+        self.assertIn("VM-A", output)
+        self.assertIn("VM-B", output)
+        self.assertIn("no Windows features, networks or VMs are changed", output)
+
     def test_list_rules_outputs_detection_ids_and_playbooks(self) -> None:
         exit_code, output = self._run_cli("list-rules")
 
@@ -52,6 +60,7 @@ class CliTests(unittest.TestCase):
         self.assertIn("AUTH-001", output)
         self.assertIn("AUTH-005", output)
         self.assertIn("docs/playbooks/", output)
+        self.assertIn("priority:", output)
 
     def test_explain_outputs_one_detection(self) -> None:
         exit_code, output = self._run_cli("explain", "AUTH-003")
@@ -59,6 +68,7 @@ class CliTests(unittest.TestCase):
         self.assertEqual(exit_code, 0)
         self.assertIn("Successful Logon After Repeated Failures", output)
         self.assertIn("Required fields", output)
+        self.assertIn("Triage priority", output)
         self.assertIn("Playbook", output)
 
     def test_explain_unknown_detection_fails_cleanly(self) -> None:
@@ -66,6 +76,21 @@ class CliTests(unittest.TestCase):
 
         self.assertEqual(exit_code, 1)
         self.assertIn("Unknown detection id", output)
+
+    def test_playbook_command_prints_one_playbook(self) -> None:
+        exit_code, output = self._run_cli("playbook", "AUTH-001")
+
+        self.assertEqual(exit_code, 0)
+        self.assertIn("# AUTH-001 Failed Logon Burst From One Source", output)
+        self.assertIn("Triage questions", output)
+
+    def test_narrative_command_prints_one_narrative(self) -> None:
+        exit_code, output = self._run_cli("narrative", "AUTH-001")
+
+        self.assertEqual(exit_code, 0)
+        self.assertIn("## AUTH-001 Failed Logon Burst From One Source", output)
+        self.assertIn("What happened", output)
+        self.assertNotIn("## AUTH-002", output)
 
     def test_all_command_runs_public_pipeline(self) -> None:
         exit_code, output = self._run_cli("all")

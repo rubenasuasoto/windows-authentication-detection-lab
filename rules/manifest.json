@@ -11,6 +11,9 @@
       "required_fields": ["EventID", "IpAddress", "Computer", "Timestamp"],
       "threshold": "5 events in 5 minutes per source and computer",
       "attack": ["T1110.001"],
+      "risk": "medium",
+      "severity_reason": "Repeated failures from one source are useful early signal but need ownership and scanner context before escalation.",
+      "triage_priority": "P3",
       "tuning": "Baseline trusted scanners and identity infrastructure before adding exclusions."
     },
     {
@@ -21,6 +24,9 @@
       "required_fields": ["EventID", "TargetUserName", "IpAddress", "Computer", "Timestamp"],
       "threshold": "4 distinct users in 10 minutes per source and computer",
       "attack": ["T1110.003"],
+      "risk": "medium",
+      "severity_reason": "Failures across several accounts increase concern, especially when the source is not an approved gateway or test system.",
+      "triage_priority": "P2",
       "tuning": "Review shared gateways and authorized identity-testing systems."
     },
     {
@@ -31,6 +37,9 @@
       "required_fields": ["EventID", "TargetUserName", "IpAddress", "Computer", "Timestamp"],
       "threshold": "3 failures followed by success in 10 minutes for the same user and source",
       "attack": ["T1078"],
+      "risk": "high",
+      "severity_reason": "A success after repeated failures is a higher-confidence sequence that should be reviewed before broad tuning.",
+      "triage_priority": "P1",
       "tuning": "Compare with password resets, user mistakes and approved support activity."
     },
     {
@@ -41,6 +50,9 @@
       "required_fields": ["EventID", "TargetUserName", "CallerComputerName", "Computer", "Timestamp"],
       "threshold": "3 lockouts in 15 minutes per caller and computer",
       "attack": [],
+      "risk": "medium",
+      "severity_reason": "Lockout bursts can be operational noise or abuse pressure, so ownership and affected account type drive severity.",
+      "triage_priority": "P3",
       "tuning": "Treat as an operational anomaly; investigate stale services and machine accounts first."
     },
     {
@@ -51,8 +63,10 @@
       "required_fields": ["EventID", "LogonType", "TargetLogonId", "SubjectLogonId", "Computer", "Timestamp"],
       "threshold": "Remote or network logon followed by privileges in 2 minutes for the same logon ID",
       "attack": ["T1078"],
+      "risk": "high",
+      "severity_reason": "Privileged remote sessions have higher impact and should be matched against approved administration paths.",
+      "triage_priority": "P1",
       "tuning": "Baseline approved administration paths, jump hosts and service identities."
     }
   ]
 }
-

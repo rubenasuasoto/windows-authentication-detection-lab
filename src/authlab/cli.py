@@ -5,10 +5,10 @@ import json
 
 from .audit import audit_repository
 from .convert import convert_rules
-from .explain import format_detection, format_rule_list
+from .explain import format_detection, format_narrative, format_playbook, format_rule_list
 from .report import build_reports
 from .validation import run_validation
-from .vm_lab import write_vm_readiness
+from .vm_lab import format_vm_plan, write_vm_readiness
 
 
 def _audit() -> bool:
@@ -63,12 +63,35 @@ def _list_rules() -> bool:
     return True
 
 
+def _playbook(rule_id: str) -> bool:
+    try:
+        print(format_playbook(rule_id))
+    except (FileNotFoundError, KeyError) as exc:
+        print(str(exc))
+        return False
+    return True
+
+
+def _narrative(rule_id: str) -> bool:
+    try:
+        print(format_narrative(rule_id))
+    except KeyError as exc:
+        print(str(exc))
+        return False
+    return True
+
+
 def _explain(rule_id: str) -> bool:
     try:
         print(format_detection(rule_id))
     except KeyError as exc:
         print(str(exc))
         return False
+    return True
+
+
+def _vm_plan() -> bool:
+    print(format_vm_plan())
     return True
 
 
@@ -81,9 +104,14 @@ def build_parser() -> argparse.ArgumentParser:
     convert_parser.add_argument("--backend", default="splunk", choices=("splunk",))
     subparsers.add_parser("report", help="build bilingual portfolio reports")
     subparsers.add_parser("vm-check", help="inspect VM readiness without changing the host")
+    subparsers.add_parser("vm-plan", help="print the optional isolated VM validation plan")
     subparsers.add_parser("list-rules", help="list detections and their playbooks")
     explain_parser = subparsers.add_parser("explain", help="explain one detection")
     explain_parser.add_argument("rule_id", help="detection id such as AUTH-003")
+    playbook_parser = subparsers.add_parser("playbook", help="print one detection playbook")
+    playbook_parser.add_argument("rule_id", help="detection id such as AUTH-001")
+    narrative_parser = subparsers.add_parser("narrative", help="print one analyst narrative")
+    narrative_parser.add_argument("rule_id", help="detection id such as AUTH-001")
     subparsers.add_parser("all", help="run audit, validation, conversion and reports")
     return parser
 
@@ -100,10 +128,16 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if _report() else 1
     if args.command == "vm-check":
         return 0 if _vm_check() else 1
+    if args.command == "vm-plan":
+        return 0 if _vm_plan() else 1
     if args.command == "list-rules":
         return 0 if _list_rules() else 1
     if args.command == "explain":
         return 0 if _explain(args.rule_id) else 1
+    if args.command == "playbook":
+        return 0 if _playbook(args.rule_id) else 1
+    if args.command == "narrative":
+        return 0 if _narrative(args.rule_id) else 1
 
     audit_ok = _audit()
     validation_ok = _validate()
