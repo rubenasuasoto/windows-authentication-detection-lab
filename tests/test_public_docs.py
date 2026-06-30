@@ -14,6 +14,7 @@ PUBLIC_DOCS = [
     ROOT / "docs" / "DATA_SOURCES.md",
     ROOT / "docs" / "DETECTION_CATALOG.md",
     ROOT / "docs" / "GITBOOK_SETUP.md",
+    ROOT / "docs" / "GITBOOK_SETUP.es.md",
     ROOT / "docs" / "TUNING_GUIDE.md",
     ROOT / "docs" / "VALIDATION.md",
     ROOT / "docs" / "VM_LAB.md",

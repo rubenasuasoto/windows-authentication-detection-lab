@@ -91,6 +91,7 @@ incluye herramientas ofensivas ni datos de producción.
 - [Detection catalog](docs/DETECTION_CATALOG.md)
 - [Documentacion preparada para GitBook](docs/README.md)
 - [Guia de configuracion GitBook](docs/GITBOOK_SETUP.md)
+- [Guia de configuracion GitBook en espanol](docs/GITBOOK_SETUP.es.md)
 - [Alert narratives](docs/ALERT_NARRATIVES.md)
 - [Per-rule playbooks](docs/playbooks/)
 - [Validation and tuning](docs/VALIDATION.md)

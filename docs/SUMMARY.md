@@ -18,3 +18,4 @@
 * [VM readiness checklist](VM_READINESS_CHECKLIST.md)
 * [Release checklist](RELEASE_CHECKLIST.md)
 * [GitBook setup](GITBOOK_SETUP.md)
+* [GitBook setup ES](GITBOOK_SETUP.es.md)
