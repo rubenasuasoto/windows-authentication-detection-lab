@@ -7,16 +7,20 @@ PUBLIC_DOCS = [
     ROOT / "README.md",
     ROOT / "README.es.md",
     ROOT / "SECURITY.md",
+    ROOT / "docs" / "README.md",
+    ROOT / "docs" / "SUMMARY.md",
     ROOT / "docs" / "ALERT_NARRATIVES.md",
     ROOT / "docs" / "ARCHITECTURE.md",
     ROOT / "docs" / "DATA_SOURCES.md",
     ROOT / "docs" / "DETECTION_CATALOG.md",
+    ROOT / "docs" / "GITBOOK_SETUP.md",
     ROOT / "docs" / "TUNING_GUIDE.md",
     ROOT / "docs" / "VALIDATION.md",
     ROOT / "docs" / "VM_LAB.md",
     ROOT / "docs" / "VM_READINESS_CHECKLIST.md",
     ROOT / "docs" / "PORTFOLIO_PRESENTATION.md",
     ROOT / "docs" / "RELEASE_CHECKLIST.md",
+    ROOT / "docs" / "playbooks" / "README.md",
 ]
 
 
@@ -37,6 +41,7 @@ class PublicDocumentationTests(unittest.TestCase):
         self.assertIn("docs/PORTFOLIO_PRESENTATION.md", local_links)
         self.assertIn("docs/RELEASE_CHECKLIST.md", local_links)
         self.assertIn("docs/TUNING_GUIDE.md", local_links)
+        self.assertIn("docs/GITBOOK_SETUP.md", local_links)
         for link in local_links:
             target = ROOT / link.split("#", 1)[0]
             with self.subTest(link=link):
@@ -68,6 +73,21 @@ class PublicDocumentationTests(unittest.TestCase):
                     any(name.startswith(expected_prefix) for name in playbooks),
                     f"Missing playbook for {detection['key']}",
                 )
+
+    def test_gitbook_navigation_covers_playbooks(self) -> None:
+        summary = (ROOT / "docs" / "SUMMARY.md").read_text(encoding="utf-8")
+        setup = (ROOT / "docs" / "GITBOOK_SETUP.md").read_text(encoding="utf-8")
+        config = (ROOT / ".gitbook.yaml").read_text(encoding="utf-8")
+
+        self.assertIn("root: ./docs/", config)
+        self.assertIn("readme: README.md", config)
+        self.assertIn("summary: SUMMARY.md", config)
+        self.assertIn("Branch: `main`", setup)
+        self.assertIn("GitHub -> GitBook", setup)
+        for detection_id in ("AUTH-001", "AUTH-002", "AUTH-003", "AUTH-004", "AUTH-005"):
+            with self.subTest(detection_id=detection_id):
+                self.assertIn(detection_id, summary)
+                self.assertIn(detection_id, setup)
 
     def test_tuning_guide_covers_visible_tuning_cases(self) -> None:
         import json

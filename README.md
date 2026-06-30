@@ -105,6 +105,8 @@ in an authorized target environment before operational use.
 - [Alert narratives](docs/ALERT_NARRATIVES.md)
 - [Data sources](docs/DATA_SOURCES.md)
 - [Detection catalog](docs/DETECTION_CATALOG.md)
+- [GitBook-ready documentation](docs/README.md)
+- [GitBook setup guide](docs/GITBOOK_SETUP.md)
 - [Per-rule playbooks](docs/playbooks/)
 - [Validation and tuning](docs/VALIDATION.md)
 - [Tuning guide](docs/TUNING_GUIDE.md)
