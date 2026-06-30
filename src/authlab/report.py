@@ -21,7 +21,7 @@ def _fingerprint() -> str:
     for path in sorted(MANIFEST_PATH.parent.glob("*")):
         if path.is_file():
             digest.update(path.name.encode())
-            digest.update(path.read_bytes())
+            digest.update(path.read_text(encoding="utf-8").encode("utf-8"))
     return digest.hexdigest()[:12]
 
 
