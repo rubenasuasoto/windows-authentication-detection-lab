@@ -199,8 +199,8 @@ class PublicDocumentationTests(unittest.TestCase):
 
         self.assertIn("uv run authlab demo --open", english)
         self.assertIn("uv run authlab demo --open", spanish)
-        self.assertNotIn(expected, english)
-        self.assertNotIn(expected, spanish)
+        self.assertIn(expected, english)
+        self.assertIn(expected, spanish)
         self.assertIn(expected, release)
 
     def test_vm_checklist_keeps_changes_explicit(self) -> None:

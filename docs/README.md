@@ -9,7 +9,9 @@ GitBook while the source of truth stays in this GitHub repository.
 
 ## Start Here
 
-- Open the local mini-SOC demo with `uv run authlab demo --open`.
+- Open the public mini-SOC demo:
+  https://rubenasuasoto.github.io/windows-authentication-detection-lab/reports/latest/demo.html
+- Or open the local mini-SOC demo with `uv run authlab demo --open`.
 - Review the five detections in [Detection catalog](DETECTION_CATALOG.md).
 - Walk through analyst response steps in [Playbooks](playbooks/README.md).
 - Check validation results in [Validation](VALIDATION.md).
@@ -36,8 +38,10 @@ GitBook while the source of truth stays in this GitHub repository.
 
 ## Public Demo Status
 
-The GitHub Pages demo is prepared by CI, but it should only be shared after the
-`Publish demo site` workflow succeeds and the URL returns `200`.
+The GitHub Pages demo is live and should be the first stop for external
+reviewers:
+
+https://rubenasuasoto.github.io/windows-authentication-detection-lab/reports/latest/demo.html
 
 GitBook is intended for polished documentation and playbook review. It does not
 replace the local demo, validation commands or CI evidence.

@@ -16,14 +16,18 @@ SPL, and publishes a bilingual validation report.
 
 ## Demo
 
+Open the public guided mini-SOC demo:
+
+https://rubenasuasoto.github.io/windows-authentication-detection-lab/reports/latest/demo.html
+
 Open the guided mini-SOC demo locally:
 
 ```powershell
 uv run authlab demo --open
 ```
 
-The GitHub Pages URL is prepared by CI and should be shared only after the
-`Publish demo site` workflow has completed successfully.
+The demo is static and self-contained. It uses only synthetic lab data and does
+not upload files, call a backend or ingest production logs.
 
 ## What this demonstrates
 
@@ -62,7 +66,8 @@ intentionally ignored by Git.
 
 ## How to review this project
 
-1. Run `uv run authlab demo --open` and walk through the guided synthetic cases.
+1. Open the public demo, or run `uv run authlab demo --open` locally, and walk
+   through the guided synthetic cases.
 2. Start with `rules/manifest.json` and the five Sigma files in `rules/`.
 3. Inspect `tests/fixtures/scenarios.json` to see the positive, negative,
    boundary and tuning cases.
