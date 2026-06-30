@@ -9,6 +9,7 @@ portfolio scope explicit and avoids claims beyond the synthetic lab.
 - [ ] Run `uv run ruff check .`.
 - [ ] Run `uv run pytest --cov=authlab --cov-report=term-missing`.
 - [ ] Run `uv run authlab all`.
+- [ ] Run `uv run authlab demo`.
 - [ ] Confirm `git diff --exit-code -- reports/latest`.
 - [ ] Run `uv run detect-secrets-hook --baseline .secrets.baseline $(git ls-files)`.
 - [ ] Run `uv run pip-audit --skip-editable`.
@@ -16,6 +17,8 @@ portfolio scope explicit and avoids claims beyond the synthetic lab.
 ## Portfolio safety review
 
 - [ ] Confirm all examples use synthetic JSON events.
+- [ ] Confirm `reports/latest/demo.html` is local-only and uses no external
+      assets, forms, uploads or network calls.
 - [ ] Confirm docs use fictional identities and documentation IP ranges only.
 - [ ] Confirm no `.evtx`, screenshots with private data, credentials, tokens,
       binaries, memory dumps or production logs are committed.
@@ -40,6 +43,7 @@ v0.1.0 - Windows Authentication Detection Lab
 
 - Five lab-only Sigma correlations for Windows authentication anomalies.
 - Synthetic fixture validation with positive, negative, boundary and tuning cases.
+- Interactive local mini-SOC demo for guided scenario review.
 - Reviewed Splunk conversion outputs for supported detections.
 - Bilingual portfolio reports and analyst-facing playbooks.
 - Read-only VM readiness and planning commands for optional isolated validation.

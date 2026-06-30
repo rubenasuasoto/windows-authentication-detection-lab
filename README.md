@@ -40,24 +40,27 @@ Requirements: Python 3.12 and [uv](https://docs.astral.sh/uv/).
 ```powershell
 uv sync --extra dev
 uv run authlab all
+uv run authlab demo --open
 uv run pytest
 ```
 
-Open `reports/latest/report.en.html` after the run. Generated Splunk queries and
-machine-readable evidence are written to `artifacts/`, which is intentionally
-ignored by Git.
+Open `reports/latest/demo.html` for the guided local mini-SOC walkthrough, or
+`reports/latest/report.en.html` for the validation report. Generated Splunk
+queries and machine-readable evidence are written to `artifacts/`, which is
+intentionally ignored by Git.
 
 ## How to review this project
 
-1. Start with `rules/manifest.json` and the five Sigma files in `rules/`.
-2. Inspect `tests/fixtures/scenarios.json` to see the positive, negative,
+1. Run `uv run authlab demo --open` and walk through the guided synthetic cases.
+2. Start with `rules/manifest.json` and the five Sigma files in `rules/`.
+3. Inspect `tests/fixtures/scenarios.json` to see the positive, negative,
    boundary and tuning cases.
-3. Run `uv run authlab all` to rebuild validation, SPL conversion and reports.
-4. Open `reports/latest/report.en.html` for the portfolio-ready validation
+4. Run `uv run authlab all` to rebuild validation, SPL conversion and reports.
+5. Open `reports/latest/report.en.html` for the portfolio-ready validation
    matrix.
-5. Read the per-rule playbooks in `docs/playbooks/`.
-6. Review `docs/ALERT_NARRATIVES.md` for analyst-facing alert summaries.
-7. Read `docs/TUNING_GUIDE.md` to see how false positives are handled without
+6. Read the per-rule playbooks in `docs/playbooks/`.
+7. Review `docs/ALERT_NARRATIVES.md` for analyst-facing alert summaries.
+8. Read `docs/TUNING_GUIDE.md` to see how false positives are handled without
    hiding the detection behavior.
 
 ## Commands
@@ -66,6 +69,8 @@ ignored by Git.
 authlab validate                 Validate rules and execute safe fixtures
 authlab convert --backend splunk Convert supported rules to Splunk SPL
 authlab report                   Build English and Spanish reports
+authlab demo                     Build the guided local mini-SOC demo
+authlab demo --open              Build and open the local demo
 authlab audit                    Reject unsafe or private artifacts
 authlab vm-check                 Inspect VM readiness without changing Windows
 authlab vm-plan                  Print the optional isolated VM validation plan

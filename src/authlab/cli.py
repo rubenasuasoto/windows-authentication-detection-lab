@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import webbrowser
 
 from .audit import audit_repository
 from .convert import convert_rules
+from .demo import build_demo
 from .explain import format_detection, format_narrative, format_playbook, format_rule_list
 from .report import build_reports
 from .validation import run_validation
@@ -40,6 +42,14 @@ def _report() -> bool:
     outputs = build_reports()
     for output in outputs:
         print(f"Generated {output}")
+    return True
+
+
+def _demo(open_browser: bool) -> bool:
+    output = build_demo()
+    print(f"Generated {output}")
+    if open_browser:
+        webbrowser.open(output.as_uri())
     return True
 
 
@@ -103,6 +113,8 @@ def build_parser() -> argparse.ArgumentParser:
     convert_parser = subparsers.add_parser("convert", help="convert rules to a reviewed backend")
     convert_parser.add_argument("--backend", default="splunk", choices=("splunk",))
     subparsers.add_parser("report", help="build bilingual portfolio reports")
+    demo_parser = subparsers.add_parser("demo", help="build the local interactive demo")
+    demo_parser.add_argument("--open", action="store_true", help="open the demo in a browser")
     subparsers.add_parser("vm-check", help="inspect VM readiness without changing the host")
     subparsers.add_parser("vm-plan", help="print the optional isolated VM validation plan")
     subparsers.add_parser("list-rules", help="list detections and their playbooks")
@@ -126,6 +138,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if _convert(args.backend) else 1
     if args.command == "report":
         return 0 if _report() else 1
+    if args.command == "demo":
+        return 0 if _demo(args.open) else 1
     if args.command == "vm-check":
         return 0 if _vm_check() else 1
     if args.command == "vm-plan":

@@ -116,6 +116,7 @@ class PublicDocumentationTests(unittest.TestCase):
         spanish = (ROOT / "README.es.md").read_text(encoding="utf-8")
 
         for expected in (
+            "authlab demo",
             "authlab vm-plan",
             "authlab playbook AUTH-001",
             "authlab narrative AUTH-001",
@@ -158,6 +159,12 @@ class PublicDocumentationTests(unittest.TestCase):
 
         self.assertIn("docs/ALERT_NARRATIVES.md", text)
         self.assertIn("analyst-facing narratives", text)
+
+    def test_portfolio_guide_mentions_local_demo(self) -> None:
+        text = (ROOT / "docs" / "PORTFOLIO_PRESENTATION.md").read_text(encoding="utf-8")
+
+        self.assertIn("reports/latest/demo.html", text)
+        self.assertIn("local mini-SOC demo", text)
 
     def test_vm_checklist_keeps_changes_explicit(self) -> None:
         text = (ROOT / "docs" / "VM_READINESS_CHECKLIST.md").read_text(encoding="utf-8")

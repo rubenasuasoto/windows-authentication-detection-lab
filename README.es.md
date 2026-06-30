@@ -26,24 +26,26 @@ Requiere Python 3.12 y [uv](https://docs.astral.sh/uv/).
 ```powershell
 uv sync --extra dev
 uv run authlab all
+uv run authlab demo --open
 uv run pytest
 ```
 
-El resultado visual se genera en `reports/latest/report.es.html`. Las consultas
-Splunk y evidencias de ejecución se guardan en `artifacts/`, fuera del control de
-versiones.
+La demo guiada se genera en `reports/latest/demo.html` y el informe visual en
+`reports/latest/report.es.html`. Las consultas Splunk y evidencias de ejecución
+se guardan en `artifacts/`, fuera del control de versiones.
 
 ## Cómo revisar este proyecto
 
-1. Empieza por `rules/manifest.json` y las cinco reglas Sigma de `rules/`.
-2. Revisa `tests/fixtures/scenarios.json` para ver casos positivos, negativos,
+1. Ejecuta `uv run authlab demo --open` y recorre los casos sintéticos guiados.
+2. Empieza por `rules/manifest.json` y las cinco reglas Sigma de `rules/`.
+3. Revisa `tests/fixtures/scenarios.json` para ver casos positivos, negativos,
    de umbral y de tuning.
-3. Ejecuta `uv run authlab all` para regenerar validación, conversión SPL e
+4. Ejecuta `uv run authlab all` para regenerar validación, conversión SPL e
    informes.
-4. Abre `reports/latest/report.es.html` para ver la matriz de validación.
-5. Lee los playbooks por regla en `docs/playbooks/`.
-6. Revisa `docs/ALERT_NARRATIVES.md` para ver res?menes de alerta escritos como analista.
-7. Lee `docs/TUNING_GUIDE.md` para comprobar cómo se tratan falsos positivos
+5. Abre `reports/latest/report.es.html` para ver la matriz de validación.
+6. Lee los playbooks por regla en `docs/playbooks/`.
+7. Revisa `docs/ALERT_NARRATIVES.md` para ver resumenes de alerta escritos como analista.
+8. Lee `docs/TUNING_GUIDE.md` para comprobar cómo se tratan falsos positivos
    sin ocultar el comportamiento detectado.
 
 ## Comandos
@@ -52,6 +54,8 @@ versiones.
 authlab validate                 Valida reglas y ejecuta fixtures seguros
 authlab convert --backend splunk Convierte reglas compatibles a Splunk SPL
 authlab report                   Genera informes en inglés y español
+authlab demo                     Genera la demo local guiada tipo mini-SOC
+authlab demo --open              Genera y abre la demo local
 authlab audit                    Rechaza artefactos privados o inseguros
 authlab vm-check                 Comprueba la VM sin modificar Windows
 authlab vm-plan                  Imprime el plan opcional de validacion en VM

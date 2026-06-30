@@ -2,6 +2,7 @@ import io
 import json
 import unittest
 from contextlib import redirect_stdout
+from unittest.mock import patch
 
 from authlab.cli import main
 
@@ -36,6 +37,20 @@ class CliTests(unittest.TestCase):
         self.assertEqual(exit_code, 0)
         self.assertIn("report.en.html", output)
         self.assertIn("report.es.html", output)
+
+    def test_demo_command_generates_local_html(self) -> None:
+        exit_code, output = self._run_cli("demo")
+
+        self.assertEqual(exit_code, 0)
+        self.assertIn("demo.html", output)
+
+    def test_demo_open_command_uses_local_browser(self) -> None:
+        with patch("authlab.cli.webbrowser.open") as open_mock:
+            exit_code, output = self._run_cli("demo", "--open")
+
+        self.assertEqual(exit_code, 0)
+        self.assertIn("demo.html", output)
+        open_mock.assert_called_once()
 
     def test_vm_check_is_read_only_and_successful(self) -> None:
         exit_code, output = self._run_cli("vm-check")

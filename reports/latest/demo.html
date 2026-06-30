@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Authentication Detection Mini-SOC</title>
+  <style>
+    :root {
+      --bg:#111417; --panel:#1b2026; --panel2:#242a31; --ink:#f3f6f8;
+      --muted:#aab4bf; --line:#3a434d; --accent:#52c7b8; --blue:#8bbcff;
+      --amber:#f5c56f; --red:#ff8f86; --green:#79d69e; --violet:#b9a4ff;
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; background:var(--bg); color:var(--ink);
+      font:14px/1.45 "Segoe UI",Arial,sans-serif;
+    }
+    header {
+      padding:26px max(20px,calc((100vw - 1220px)/2)); border-bottom:1px solid var(--line);
+      background:#171b20;
+    }
+    h1 { margin:0 0 6px; font-size:28px; letter-spacing:0; }
+    h2 { margin:0 0 12px; font-size:17px; letter-spacing:0; }
+    h3 { margin:0 0 8px; font-size:14px; letter-spacing:0; color:var(--muted); }
+    p { margin:0; color:var(--muted); }
+    code { color:var(--blue); }
+    main { max-width:1220px; margin:0 auto; padding:18px; display:grid; gap:14px; }
+    section { min-width:0; border:1px solid var(--line); background:var(--panel); border-radius:8px; padding:16px; }
+    .notice { margin-top:12px; color:#ffe7b0; border-left:3px solid var(--amber); padding-left:10px; }
+    .metrics { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
+    .metric { background:var(--panel2); border:1px solid var(--line); border-radius:7px; padding:12px; min-height:76px; }
+    .metric strong { display:block; font-size:24px; color:var(--accent); }
+    .metric span { color:var(--muted); }
+    .controls { display:grid; grid-template-columns:1fr 1.4fr; gap:12px; align-items:end; }
+    label { display:block; color:var(--muted); font-size:12px; margin-bottom:5px; }
+    select {
+      width:100%; color:var(--ink); background:#101316; border:1px solid var(--line);
+      border-radius:6px; padding:10px; font:inherit;
+    }
+    .grid { display:grid; grid-template-columns:0.8fr 1.2fr; gap:14px; align-items:start; }
+    .stack { display:grid; gap:14px; }
+    .chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+    .chip { border:1px solid var(--line); border-radius:999px; padding:4px 8px; color:var(--muted); background:#15191e; }
+    .chip.high,.chip.P1,.chip.fail { color:var(--red); }
+    .chip.medium,.chip.P2,.chip.P3,.chip.tune { color:var(--amber); }
+    .chip.pass,.chip.keep { color:var(--green); }
+    .kv { display:grid; grid-template-columns:130px 1fr; gap:8px; margin-top:10px; }
+    .kv span:nth-child(odd) { color:var(--muted); }
+    .table-wrap { overflow:auto; max-width:100%; }
+    table { width:100%; min-width:780px; border-collapse:collapse; }
+    th,td { border-bottom:1px solid var(--line); padding:9px; text-align:left; vertical-align:top; }
+    th { color:var(--muted); font-size:12px; }
+    td { font-family:Consolas,"Courier New",monospace; font-size:12px; }
+    .narrative { display:grid; gap:10px; }
+    .narrative div { border-left:2px solid var(--violet); padding-left:10px; }
+    .narrative strong { display:block; margin-bottom:2px; }
+    .route { color:var(--blue); overflow-wrap:anywhere; }
+    @media (max-width:860px) {
+      .metrics,.controls,.grid { grid-template-columns:minmax(0,1fr); }
+      h1 { font-size:23px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Authentication Detection Mini-SOC</h1>
+    <p>Guided, local-only walkthrough for synthetic Windows authentication detections.</p>
+    <p class="notice">Synthetic lab only. No production logs, credentials, malware, offensive simulations or host-changing actions.</p>
+  </header>
+  <main>
+    <section class="metrics" aria-label="Demo metrics">
+      <div class="metric"><strong id="rulesMetric"></strong><span>Detections</span></div>
+      <div class="metric"><strong id="casesMetric"></strong><span>Synthetic cases</span></div>
+      <div class="metric"><strong id="alertsMetric"></strong><span>Expected alerts</span></div>
+      <div class="metric"><strong id="tuneMetric"></strong><span>Tuning cases</span></div>
+      <div class="metric"><strong id="passMetric"></strong><span>Pass rate</span></div>
+    </section>
+    <section class="controls" aria-label="Scenario controls">
+      <div>
+        <label for="ruleSelect">Detection</label>
+        <select id="ruleSelect"></select>
+      </div>
+      <div>
+        <label for="caseSelect">Scenario</label>
+        <select id="caseSelect"></select>
+      </div>
+    </section>
+    <div class="grid">
+      <section>
+        <h2 id="caseTitle"></h2>
+        <p id="caseNote"></p>
+        <div class="chips" id="caseChips"></div>
+        <div class="kv">
+          <span>Threshold</span><span id="threshold"></span>
+          <span>Severity reason</span><span id="severity"></span>
+          <span>Matched fields</span><span id="fields"></span>
+          <span>Playbook</span><span class="route" id="playbook"></span>
+        </div>
+      </section>
+      <section>
+        <h2>Analyst narrative</h2>
+        <div class="narrative" id="narrative"></div>
+      </section>
+    </div>
+    <section>
+      <h2>Event timeline</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Timestamp</th><th>EventID</th><th>User</th><th>Source</th>
+              <th>Computer</th><th>Logon</th><th>Fields</th>
+            </tr>
+          </thead>
+          <tbody id="eventsBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script id="demo-data" type="application/json">{"scope_notice":"Synthetic lab only. No production logs, credentials, malware, offensive simulations or host-changing actions.","summary":{"rules":5,"cases":17,"expected_alerts":7,"tuning_cases":2,"passing_cases":17,"pass_rate":100},"detections":{"AUTH-001":{"key":"AUTH-001","title":"Failed Logon Burst From One Source","events":[4625],"attack":["T1110.001"],"threshold":"5 events in 5 minutes per source and computer","risk":"medium","triage_priority":"P3","severity_reason":"Repeated failures from one source are useful early signal but need ownership and scanner context before escalation.","tuning":"Baseline trusted scanners and identity infrastructure before adding exclusions.","playbook":"docs/playbooks/AUTH-001_failed_logon_burst.md","narrative":{"what_happened":"One source generated five failed Windows logons against the same computer within five minutes.","why_it_matters":"Repeated failures from one source can indicate password guessing, a broken authentication dependency or a noisy approved scanner.","what_to_check_next":"Confirm source ownership, affected user count, target host role, maintenance windows and any later successful logon from the same source.","decision_example":"Keep as an alert unless the source is an approved and documented scanner with a narrow owner-approved exception."}},"AUTH-002":{"key":"AUTH-002","title":"Failed Logons Across Multiple Accounts","events":[4625],"attack":["T1110.003"],"threshold":"4 distinct users in 10 minutes per source and computer","risk":"medium","triage_priority":"P2","severity_reason":"Failures across several accounts increase concern, especially when the source is not an approved gateway or test system.","tuning":"Review shared gateways and authorized identity-testing systems.","playbook":"docs/playbooks/AUTH-002_multiple_accounts.md","narrative":{"what_happened":"One source failed authentication against four distinct users within ten minutes.","why_it_matters":"A single source touching multiple accounts is consistent with password spraying behavior, especially when the accounts are unrelated.","what_to_check_next":"Review whether the source is a gateway, proxy, VPN or identity-testing host. Check whether any targeted account later authenticated successfully.","decision_example":"Escalate when the source is not expected for authentication traffic or when affected users span unrelated groups."}},"AUTH-003":{"key":"AUTH-003","title":"Successful Logon After Repeated Failures","events":[4625,4624],"attack":["T1078"],"threshold":"3 failures followed by success in 10 minutes for the same user and source","risk":"high","triage_priority":"P1","severity_reason":"A success after repeated failures is a higher-confidence sequence that should be reviewed before broad tuning.","tuning":"Compare with password resets, user mistakes and approved support activity.","playbook":"docs/playbooks/AUTH-003_success_after_failures.md","narrative":{"what_happened":"A user had three failed logons followed by a successful logon from the same source within ten minutes.","why_it_matters":"The ordered sequence is more interesting than isolated failure events because it may show credential guessing followed by a valid authentication.","what_to_check_next":"Look for helpdesk activity, password resets, user mistakes, unusual source systems and sensitive actions after the successful session.","decision_example":"Keep visible as a higher-confidence authentication sequence, then tune only with support or training context."}},"AUTH-004":{"key":"AUTH-004","title":"Account Lockout Burst","events":[4740],"attack":[],"threshold":"3 lockouts in 15 minutes per caller and computer","risk":"medium","triage_priority":"P3","severity_reason":"Lockout bursts can be operational noise or abuse pressure, so ownership and affected account type drive severity.","tuning":"Treat as an operational anomaly; investigate stale services and machine accounts first.","playbook":"docs/playbooks/AUTH-004_account_lockout_burst.md","narrative":{"what_happened":"Three account lockouts were associated with the same caller computer in fifteen minutes.","why_it_matters":"Lockout bursts can be caused by brute-force pressure, stale credentials, scheduled tasks or broken services.","what_to_check_next":"Determine whether affected accounts are human users or machine accounts. Review recent password rotations, application deployments and caller ownership.","decision_example":"Investigate operational root cause first. Escalate when human accounts are affected from an unknown caller or combined with failed logon bursts."}},"AUTH-005":{"key":"AUTH-005","title":"Remote Logon Followed By Special Privileges","events":[4624,4672],"attack":["T1078"],"threshold":"Remote or network logon followed by privileges in 2 minutes for the same logon ID","risk":"high","triage_priority":"P1","severity_reason":"Privileged remote sessions have higher impact and should be matched against approved administration paths.","tuning":"Baseline approved administration paths, jump hosts and service identities.","playbook":"docs/playbooks/AUTH-005_privileged_remote_logon.md","narrative":{"what_happened":"A remote or network logon was followed by special privileges on the same logon identifier within two minutes.","why_it_matters":"Privileged remote sessions deserve review because they can represent legitimate administration or misuse of valid accounts.","what_to_check_next":"Confirm user role, source host, destination host, approved change window and whether the path matches normal administration.","decision_example":"Keep as a reviewable privileged-session alert. Tune only when both jump-host context and administrative purpose are documented."}}},"cases":[{"case_id":"AUTH-001-POS","rule_id":"AUTH-001","category":"positive","expected":true,"observed":true,"status":"pass","disposition":"keep","matched_fields":["EventID","IpAddress","Computer"],"matched_event_count":5,"note":"Five failures from one source in four minutes.","events":[{"Timestamp":"2026-01-15T09:00:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T09:01:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T09:02:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T09:03:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T09:04:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"}]},{"case_id":"AUTH-001-NEG","rule_id":"AUTH-001","category":"negative","expected":false,"observed":false,"status":"pass","disposition":"keep","matched_fields":["EventID","IpAddress","Computer"],"matched_event_count":0,"note":"Failures are split across independent sources.","events":[{"Timestamp":"2026-01-15T09:00:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.11","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T09:01:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.12","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T09:02:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.13","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T09:03:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.14","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T09:04:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.15","Computer":"LAB-DC-01"}]},{"case_id":"AUTH-001-BOUNDARY","rule_id":"AUTH-001","category":"boundary","expected":false,"observed":false,"status":"pass","disposition":"keep","matched_fields":["EventID","IpAddress","Computer"],"matched_event_count":0,"note":"Four failures remain immediately below the threshold.","events":[{"Timestamp":"2026-01-15T09:00:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T09:01:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T09:02:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T09:03:00Z","EventID":4625,"TargetUserName":"analyst01","IpAddress":"192.0.2.10","Computer":"LAB-DC-01"}]},{"case_id":"AUTH-002-POS","rule_id":"AUTH-002","category":"positive","expected":true,"observed":true,"status":"pass","disposition":"keep","matched_fields":["EventID","TargetUserName","IpAddress","Computer"],"matched_event_count":4,"note":"One source reaches four distinct fictional users.","events":[{"Timestamp":"2026-01-15T10:00:00Z","EventID":4625,"TargetUserName":"user01","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T10:02:00Z","EventID":4625,"TargetUserName":"user02","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T10:04:00Z","EventID":4625,"TargetUserName":"user03","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T10:06:00Z","EventID":4625,"TargetUserName":"user04","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"}]},{"case_id":"AUTH-002-NEG","rule_id":"AUTH-002","category":"negative","expected":false,"observed":false,"status":"pass","disposition":"keep","matched_fields":["EventID","TargetUserName","IpAddress","Computer"],"matched_event_count":0,"note":"Repeated failures affect only one account.","events":[{"Timestamp":"2026-01-15T10:00:00Z","EventID":4625,"TargetUserName":"user01","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T10:02:00Z","EventID":4625,"TargetUserName":"user01","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T10:04:00Z","EventID":4625,"TargetUserName":"user01","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T10:06:00Z","EventID":4625,"TargetUserName":"user01","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"}]},{"case_id":"AUTH-002-BOUNDARY","rule_id":"AUTH-002","category":"boundary","expected":false,"observed":false,"status":"pass","disposition":"keep","matched_fields":["EventID","TargetUserName","IpAddress","Computer"],"matched_event_count":0,"note":"Three distinct users remain below the threshold.","events":[{"Timestamp":"2026-01-15T10:00:00Z","EventID":4625,"TargetUserName":"user01","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T10:03:00Z","EventID":4625,"TargetUserName":"user02","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T10:06:00Z","EventID":4625,"TargetUserName":"user03","IpAddress":"192.0.2.20","Computer":"LAB-DC-01"}]},{"case_id":"AUTH-003-POS","rule_id":"AUTH-003","category":"positive","expected":true,"observed":true,"status":"pass","disposition":"keep","matched_fields":["EventID","TargetUserName","IpAddress","Computer"],"matched_event_count":4,"note":"Three failures are followed by success for the same identity and source.","events":[{"Timestamp":"2026-01-15T11:00:00Z","EventID":4625,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01"},{"Timestamp":"2026-01-15T11:02:00Z","EventID":4625,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01"},{"Timestamp":"2026-01-15T11:04:00Z","EventID":4625,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01"},{"Timestamp":"2026-01-15T11:06:00Z","EventID":4624,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01","LogonType":3,"TargetLogonId":"0x510"}]},{"case_id":"AUTH-003-NEG","rule_id":"AUTH-003","category":"negative","expected":false,"observed":false,"status":"pass","disposition":"keep","matched_fields":["EventID","TargetUserName","IpAddress","Computer"],"matched_event_count":0,"note":"The successful logon comes from a different source.","events":[{"Timestamp":"2026-01-15T11:00:00Z","EventID":4625,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01"},{"Timestamp":"2026-01-15T11:02:00Z","EventID":4625,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01"},{"Timestamp":"2026-01-15T11:04:00Z","EventID":4625,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01"},{"Timestamp":"2026-01-15T11:06:00Z","EventID":4624,"TargetUserName":"user05","IpAddress":"192.0.2.31","Computer":"LAB-WS-01","LogonType":3,"TargetLogonId":"0x511"}]},{"case_id":"AUTH-003-BOUNDARY","rule_id":"AUTH-003","category":"boundary","expected":false,"observed":false,"status":"pass","disposition":"keep","matched_fields":["EventID","TargetUserName","IpAddress","Computer"],"matched_event_count":0,"note":"Two failures before success remain below the threshold.","events":[{"Timestamp":"2026-01-15T11:00:00Z","EventID":4625,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01"},{"Timestamp":"2026-01-15T11:03:00Z","EventID":4625,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01"},{"Timestamp":"2026-01-15T11:06:00Z","EventID":4624,"TargetUserName":"user05","IpAddress":"192.0.2.30","Computer":"LAB-WS-01","LogonType":3,"TargetLogonId":"0x512"}]},{"case_id":"AUTH-003-TUNE","rule_id":"AUTH-003","category":"false_positive","expected":true,"observed":true,"status":"pass","disposition":"tune","matched_fields":["EventID","TargetUserName","IpAddress","Computer"],"matched_event_count":4,"note":"A fictional user succeeds after mistakes; preserve the alert and tune with environment context.","events":[{"Timestamp":"2026-01-15T11:20:00Z","EventID":4625,"TargetUserName":"trainee01","IpAddress":"192.0.2.32","Computer":"LAB-WS-02"},{"Timestamp":"2026-01-15T11:21:00Z","EventID":4625,"TargetUserName":"trainee01","IpAddress":"192.0.2.32","Computer":"LAB-WS-02"},{"Timestamp":"2026-01-15T11:22:00Z","EventID":4625,"TargetUserName":"trainee01","IpAddress":"192.0.2.32","Computer":"LAB-WS-02"},{"Timestamp":"2026-01-15T11:23:00Z","EventID":4624,"TargetUserName":"trainee01","IpAddress":"192.0.2.32","Computer":"LAB-WS-02","LogonType":2,"TargetLogonId":"0x513"}]},{"case_id":"AUTH-004-POS","rule_id":"AUTH-004","category":"positive","expected":true,"observed":true,"status":"pass","disposition":"keep","matched_fields":["EventID","CallerComputerName","Computer"],"matched_event_count":3,"note":"Three user account lockouts share one caller.","events":[{"Timestamp":"2026-01-15T12:00:00Z","EventID":4740,"TargetUserName":"user06","CallerComputerName":"LAB-APP-01","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T12:04:00Z","EventID":4740,"TargetUserName":"user07","CallerComputerName":"LAB-APP-01","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T12:08:00Z","EventID":4740,"TargetUserName":"user08","CallerComputerName":"LAB-APP-01","Computer":"LAB-DC-01"}]},{"case_id":"AUTH-004-NEG","rule_id":"AUTH-004","category":"negative","expected":false,"observed":false,"status":"pass","disposition":"keep","matched_fields":["EventID","CallerComputerName","Computer"],"matched_event_count":0,"note":"Machine accounts are excluded by the documented tuning filter.","events":[{"Timestamp":"2026-01-15T12:00:00Z","EventID":4740,"TargetUserName":"LAB-WS-01$","CallerComputerName":"LAB-MGMT-01","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T12:04:00Z","EventID":4740,"TargetUserName":"LAB-WS-02$","CallerComputerName":"LAB-MGMT-01","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T12:08:00Z","EventID":4740,"TargetUserName":"LAB-WS-03$","CallerComputerName":"LAB-MGMT-01","Computer":"LAB-DC-01"}]},{"case_id":"AUTH-004-BOUNDARY","rule_id":"AUTH-004","category":"boundary","expected":false,"observed":false,"status":"pass","disposition":"keep","matched_fields":["EventID","CallerComputerName","Computer"],"matched_event_count":0,"note":"Two lockouts remain below the threshold.","events":[{"Timestamp":"2026-01-15T12:00:00Z","EventID":4740,"TargetUserName":"user06","CallerComputerName":"LAB-APP-01","Computer":"LAB-DC-01"},{"Timestamp":"2026-01-15T12:07:00Z","EventID":4740,"TargetUserName":"user07","CallerComputerName":"LAB-APP-01","Computer":"LAB-DC-01"}]},{"case_id":"AUTH-005-POS","rule_id":"AUTH-005","category":"positive","expected":true,"observed":true,"status":"pass","disposition":"keep","matched_fields":["EventID","LogonType","TargetLogonId","SubjectLogonId","Computer"],"matched_event_count":2,"note":"Remote interactive logon receives special privileges one minute later.","events":[{"Timestamp":"2026-01-15T13:00:00Z","EventID":4624,"TargetUserName":"admin01","IpAddress":"192.0.2.40","Computer":"LAB-SRV-01","LogonType":10,"TargetLogonId":"0x700"},{"Timestamp":"2026-01-15T13:01:00Z","EventID":4672,"SubjectUserName":"admin01","SubjectLogonId":"0x700","Computer":"LAB-SRV-01"}]},{"case_id":"AUTH-005-NEG","rule_id":"AUTH-005","category":"negative","expected":false,"observed":false,"status":"pass","disposition":"keep","matched_fields":["EventID","LogonType","TargetLogonId","SubjectLogonId","Computer"],"matched_event_count":0,"note":"An interactive local logon is outside the remote logon types.","events":[{"Timestamp":"2026-01-15T13:00:00Z","EventID":4624,"TargetUserName":"admin01","IpAddress":"127.0.0.1","Computer":"LAB-SRV-01","LogonType":2,"TargetLogonId":"0x701"},{"Timestamp":"2026-01-15T13:01:00Z","EventID":4672,"SubjectUserName":"admin01","SubjectLogonId":"0x701","Computer":"LAB-SRV-01"}]},{"case_id":"AUTH-005-BOUNDARY","rule_id":"AUTH-005","category":"boundary","expected":false,"observed":false,"status":"pass","disposition":"keep","matched_fields":["EventID","LogonType","TargetLogonId","SubjectLogonId","Computer"],"matched_event_count":0,"note":"Privilege assignment occurs one second outside the two-minute window.","events":[{"Timestamp":"2026-01-15T13:00:00Z","EventID":4624,"TargetUserName":"admin01","IpAddress":"192.0.2.40","Computer":"LAB-SRV-01","LogonType":10,"TargetLogonId":"0x702"},{"Timestamp":"2026-01-15T13:02:01Z","EventID":4672,"SubjectUserName":"admin01","SubjectLogonId":"0x702","Computer":"LAB-SRV-01"}]},{"case_id":"AUTH-005-TUNE","rule_id":"AUTH-005","category":"false_positive","expected":true,"observed":true,"status":"pass","disposition":"tune","matched_fields":["EventID","LogonType","TargetLogonId","SubjectLogonId","Computer"],"matched_event_count":2,"note":"Approved fictional jump-host activity still alerts and requires an environment-owned exception.","events":[{"Timestamp":"2026-01-15T13:20:00Z","EventID":4624,"TargetUserName":"admin02","IpAddress":"198.51.100.10","Computer":"LAB-SRV-02","LogonType":10,"TargetLogonId":"0x703"},{"Timestamp":"2026-01-15T13:20:30Z","EventID":4672,"SubjectUserName":"admin02","SubjectLogonId":"0x703","Computer":"LAB-SRV-02"}]}]}</script>
+  <script>
+    const data = JSON.parse(document.getElementById('demo-data').textContent);
+    const els = {
+      rulesMetric: document.getElementById('rulesMetric'),
+      casesMetric: document.getElementById('casesMetric'),
+      alertsMetric: document.getElementById('alertsMetric'),
+      tuneMetric: document.getElementById('tuneMetric'),
+      passMetric: document.getElementById('passMetric'),
+      ruleSelect: document.getElementById('ruleSelect'),
+      caseSelect: document.getElementById('caseSelect'),
+      caseTitle: document.getElementById('caseTitle'),
+      caseNote: document.getElementById('caseNote'),
+      caseChips: document.getElementById('caseChips'),
+      threshold: document.getElementById('threshold'),
+      severity: document.getElementById('severity'),
+      fields: document.getElementById('fields'),
+      playbook: document.getElementById('playbook'),
+      narrative: document.getElementById('narrative'),
+      eventsBody: document.getElementById('eventsBody')
+    };
+
+    function text(value) {
+      return value === undefined || value === null || value === '' ? '-' : String(value);
+    }
+
+    function setText(node, value) {
+      node.textContent = text(value);
+    }
+
+    function chip(value) {
+      const span = document.createElement('span');
+      span.className = 'chip ' + text(value).replace(/[^a-zA-Z0-9_-]/g, '');
+      span.textContent = text(value);
+      return span;
+    }
+
+    function eventUser(event) {
+      return event.TargetUserName || event.SubjectUserName || '-';
+    }
+
+    function eventSource(event) {
+      return event.IpAddress || event.CallerComputerName || '-';
+    }
+
+    function eventLogon(event) {
+      return event.TargetLogonId || event.SubjectLogonId || event.LogonType || '-';
+    }
+
+    function renderRuleOptions() {
+      Object.values(data.detections).forEach((detection) => {
+        const option = document.createElement('option');
+        option.value = detection.key;
+        option.textContent = detection.key + ' - ' + detection.title;
+        els.ruleSelect.appendChild(option);
+      });
+    }
+
+    function renderCaseOptions() {
+      const ruleId = els.ruleSelect.value;
+      els.caseSelect.replaceChildren();
+      data.cases.filter((item) => item.rule_id === ruleId).forEach((item) => {
+        const option = document.createElement('option');
+        option.value = item.case_id;
+        option.textContent = item.case_id + ' | ' + item.category;
+        els.caseSelect.appendChild(option);
+      });
+    }
+
+    function renderNarrative(detection) {
+      const labels = [
+        ['What happened', detection.narrative.what_happened],
+        ['Why it matters', detection.narrative.why_it_matters],
+        ['What to check next', detection.narrative.what_to_check_next],
+        ['Decision example', detection.narrative.decision_example]
+      ];
+      els.narrative.replaceChildren();
+      labels.forEach(([label, value]) => {
+        const block = document.createElement('div');
+        const strong = document.createElement('strong');
+        const p = document.createElement('p');
+        strong.textContent = label;
+        p.textContent = value;
+        block.append(strong, p);
+        els.narrative.appendChild(block);
+      });
+    }
+
+    function renderEvents(events) {
+      els.eventsBody.replaceChildren();
+      events.forEach((event) => {
+        const row = document.createElement('tr');
+        const extra = Object.keys(event)
+          .filter((key) => !['Timestamp','EventID','TargetUserName','SubjectUserName','IpAddress','CallerComputerName','Computer','TargetLogonId','SubjectLogonId','LogonType'].includes(key))
+          .map((key) => key + '=' + text(event[key]))
+          .join('; ');
+        [event.Timestamp, event.EventID, eventUser(event), eventSource(event), event.Computer, eventLogon(event), extra || '-'].forEach((value) => {
+          const cell = document.createElement('td');
+          cell.textContent = text(value);
+          row.appendChild(cell);
+        });
+        els.eventsBody.appendChild(row);
+      });
+    }
+
+    function renderCase() {
+      const selected = data.cases.find((item) => item.case_id === els.caseSelect.value);
+      const detection = data.detections[selected.rule_id];
+      setText(els.caseTitle, selected.case_id + ' - ' + detection.title);
+      setText(els.caseNote, selected.note);
+      els.caseChips.replaceChildren(
+        chip(selected.category),
+        chip('expected: ' + selected.expected),
+        chip('observed: ' + selected.observed),
+        chip(selected.status),
+        chip(selected.disposition),
+        chip(detection.risk),
+        chip(detection.triage_priority)
+      );
+      setText(els.threshold, detection.threshold);
+      setText(els.severity, detection.severity_reason);
+      setText(els.fields, selected.matched_fields.join(', '));
+      setText(els.playbook, detection.playbook);
+      renderNarrative(detection);
+      renderEvents(selected.events);
+    }
+
+    els.rulesMetric.textContent = data.summary.rules;
+    els.casesMetric.textContent = data.summary.cases;
+    els.alertsMetric.textContent = data.summary.expected_alerts;
+    els.tuneMetric.textContent = data.summary.tuning_cases;
+    els.passMetric.textContent = data.summary.pass_rate + '%';
+    renderRuleOptions();
+    els.ruleSelect.value = 'AUTH-003';
+    renderCaseOptions();
+    els.caseSelect.value = 'AUTH-003-POS';
+    renderCase();
+    els.ruleSelect.addEventListener('change', () => {
+      renderCaseOptions();
+      renderCase();
+    });
+    els.caseSelect.addEventListener('change', renderCase);
+  </script>
+</body>
+</html>
