@@ -22,7 +22,7 @@ portfolio scope explicit and avoids claims beyond the synthetic lab.
 - [ ] Confirm GitHub Pages is configured to deploy from GitHub Actions.
 - [ ] Confirm the published demo opens:
       `https://rubenasuasoto.github.io/windows-authentication-detection-lab/reports/latest/demo.html`.
-- [ ] Confirm playbook and validation report links work from the published demo.
+- [ ] Confirm playbook links work from the published demo.
 - [ ] Confirm docs use fictional identities and documentation IP ranges only.
 - [ ] Confirm no `.evtx`, screenshots with private data, credentials, tokens,
       binaries, memory dumps or production logs are committed.

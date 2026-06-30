@@ -13,7 +13,8 @@ conversion, an interactive local demo, reports and safety checks.
 
 ## What to show first
 
-1. GitHub Pages demo: `https://rubenasuasoto.github.io/windows-authentication-detection-lab/reports/latest/demo.html`.
+1. Local demo: run `uv run authlab demo --open`, or open
+   `reports/latest/demo.html` after generation.
 2. `rules/`: five readable Sigma detections with ATT&CK mapping and tuning
    notes.
 3. `tests/fixtures/scenarios.json`: positive, negative, boundary and tuning
@@ -25,12 +26,14 @@ conversion, an interactive local demo, reports and safety checks.
 
 ## Three-minute reviewer path
 
-1. Open the GitHub Pages demo.
+1. Open the local demo with `uv run authlab demo --open`, or the published
+   GitHub Pages demo after release validation.
 2. Keep the default `AUTH-003-POS` scenario and show the failed-logon sequence
    followed by success.
 3. Open the playbook link from the demo to show triage questions.
 4. Use `Next case` to compare with a negative or boundary case.
-5. Open the validation report link to show the full matrix and limitations.
+5. Open `reports/latest/report.en.html` separately to show the full matrix and
+   limitations.
 
 ## Interview talking points
 
@@ -45,8 +48,8 @@ conversion, an interactive local demo, reports and safety checks.
   observable facts, impact and next steps.
 - I added a local mini-SOC demo so reviewers can select a scenario, inspect
   synthetic Windows events and see why the rule alerts or stays quiet.
-- I published the demo as a static GitHub Pages site so a reviewer can open it
-  without cloning the repository.
+- I prepared the demo for static GitHub Pages publishing so reviewers can open
+  it without extra services once Pages is enabled.
 - I kept the lab safe for publication: no EVTX files, credentials, binaries,
   memory access, production paths or offensive simulations.
 

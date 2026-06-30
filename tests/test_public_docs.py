@@ -167,7 +167,7 @@ class PublicDocumentationTests(unittest.TestCase):
         self.assertIn("local mini-SOC demo", text)
         self.assertIn("Three-minute reviewer path", text)
 
-    def test_public_docs_link_published_demo(self) -> None:
+    def test_public_docs_explain_demo_access(self) -> None:
         expected = (
             "https://rubenasuasoto.github.io/windows-authentication-detection-lab/"
             "reports/latest/demo.html"
@@ -176,9 +176,10 @@ class PublicDocumentationTests(unittest.TestCase):
         spanish = (ROOT / "README.es.md").read_text(encoding="utf-8")
         release = (ROOT / "docs" / "RELEASE_CHECKLIST.md").read_text(encoding="utf-8")
 
-        self.assertIn("GitHub Pages", english)
-        self.assertIn(expected, english)
-        self.assertIn(expected, spanish)
+        self.assertIn("uv run authlab demo --open", english)
+        self.assertIn("uv run authlab demo --open", spanish)
+        self.assertNotIn(expected, english)
+        self.assertNotIn(expected, spanish)
         self.assertIn(expected, release)
 
     def test_vm_checklist_keeps_changes_explicit(self) -> None:

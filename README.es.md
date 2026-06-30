@@ -11,12 +11,16 @@ Splunk SPL y publica un informe bilingüe.
 > registros de producción, malware, binarios, acceso a memoria ni simulaciones
 > ofensivas.
 
-## Demo publicada
+## Demo
 
-Abre la demo guiada tipo mini-SOC en GitHub Pages:
-[windows-authentication-detection-lab demo](https://rubenasuasoto.github.io/windows-authentication-detection-lab/reports/latest/demo.html).
+Abre la demo guiada tipo mini-SOC en local:
 
-La misma demo puede regenerarse en local con `uv run authlab demo --open`.
+```powershell
+uv run authlab demo --open
+```
+
+La URL de GitHub Pages queda preparada por CI y debe compartirse solo cuando el
+workflow `Publish demo site` haya terminado correctamente.
 
 ## Qué demuestra
 
@@ -43,7 +47,7 @@ se guardan en `artifacts/`, fuera del control de versiones.
 
 ## Cómo revisar este proyecto
 
-1. Abre la demo de GitHub Pages o ejecuta `uv run authlab demo --open` en local.
+1. Ejecuta `uv run authlab demo --open` y recorre los casos sintéticos guiados.
 2. Empieza por `rules/manifest.json` y las cinco reglas Sigma de `rules/`.
 3. Revisa `tests/fixtures/scenarios.json` para ver casos positivos, negativos,
    de umbral y de tuning.
