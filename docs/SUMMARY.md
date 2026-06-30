@@ -13,7 +13,7 @@
   * [AUTH-003 Success after failures](playbooks/AUTH-003_success_after_failures.md)
   * [AUTH-004 Account lockout burst](playbooks/AUTH-004_account_lockout_burst.md)
   * [AUTH-005 Privileged remote logon](playbooks/AUTH-005_privileged_remote_logon.md)
-* [Portfolio presentation](PORTFOLIO_PRESENTATION.md)
+* [Reviewer guide](REVIEWER_GUIDE.md)
 * [Optional VM lab](VM_LAB.md)
 * [VM readiness checklist](VM_READINESS_CHECKLIST.md)
 * [Release checklist](RELEASE_CHECKLIST.md)

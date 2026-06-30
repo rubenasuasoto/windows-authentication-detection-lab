@@ -19,7 +19,7 @@ PUBLIC_DOCS = [
     ROOT / "docs" / "VALIDATION.md",
     ROOT / "docs" / "VM_LAB.md",
     ROOT / "docs" / "VM_READINESS_CHECKLIST.md",
-    ROOT / "docs" / "PORTFOLIO_PRESENTATION.md",
+    ROOT / "docs" / "REVIEWER_GUIDE.md",
     ROOT / "docs" / "RELEASE_CHECKLIST.md",
     ROOT / "docs" / "playbooks" / "README.md",
 ]
@@ -41,7 +41,7 @@ class PublicDocumentationTests(unittest.TestCase):
         local_links = [link for link in links if not link.startswith(("http://", "https://"))]
 
         self.assertIn("docs/DETECTION_CATALOG.md", local_links)
-        self.assertIn("docs/PORTFOLIO_PRESENTATION.md", local_links)
+        self.assertIn("docs/REVIEWER_GUIDE.md", local_links)
         self.assertIn("docs/RELEASE_CHECKLIST.md", local_links)
         self.assertIn("docs/TUNING_GUIDE.md", local_links)
         self.assertIn("docs/GITBOOK_SETUP.md", local_links)
@@ -112,19 +112,19 @@ class PublicDocumentationTests(unittest.TestCase):
                 self.assertIn(case["case_id"], guide)
                 self.assertIn(case["rule_id"], guide)
 
-    def test_portfolio_guide_keeps_defensive_scope_visible(self) -> None:
-        text = (ROOT / "docs" / "PORTFOLIO_PRESENTATION.md").read_text(encoding="utf-8")
+    def test_reviewer_guide_keeps_defensive_scope_visible(self) -> None:
+        text = (ROOT / "docs" / "REVIEWER_GUIDE.md").read_text(encoding="utf-8")
 
         self.assertIn("synthetic JSON events", text)
         self.assertIn("documentation IP ranges", text)
         self.assertIn("It is not a production SIEM deployment", text)
         self.assertIn("offensive simulations", text)
 
-    def test_spanish_readme_links_portfolio_guide(self) -> None:
+    def test_spanish_readme_links_reviewer_guide(self) -> None:
         text = (ROOT / "README.es.md").read_text(encoding="utf-8")
 
         self.assertIn("Presentación", text)
-        self.assertIn("docs/PORTFOLIO_PRESENTATION.md", text)
+        self.assertIn("docs/REVIEWER_GUIDE.md", text)
 
     def test_readmes_explain_how_to_review_the_project(self) -> None:
         english = (ROOT / "README.md").read_text(encoding="utf-8")
@@ -182,14 +182,14 @@ class PublicDocumentationTests(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, narratives)
 
-    def test_portfolio_guide_mentions_alert_narratives(self) -> None:
-        text = (ROOT / "docs" / "PORTFOLIO_PRESENTATION.md").read_text(encoding="utf-8")
+    def test_reviewer_guide_mentions_alert_narratives(self) -> None:
+        text = (ROOT / "docs" / "REVIEWER_GUIDE.md").read_text(encoding="utf-8")
 
         self.assertIn("docs/ALERT_NARRATIVES.md", text)
         self.assertIn("analyst-facing narratives", text)
 
-    def test_portfolio_guide_mentions_local_demo(self) -> None:
-        text = (ROOT / "docs" / "PORTFOLIO_PRESENTATION.md").read_text(encoding="utf-8")
+    def test_reviewer_guide_mentions_local_demo(self) -> None:
+        text = (ROOT / "docs" / "REVIEWER_GUIDE.md").read_text(encoding="utf-8")
 
         self.assertIn("reports/latest/demo.html", text)
         self.assertIn("local mini-SOC demo", text)

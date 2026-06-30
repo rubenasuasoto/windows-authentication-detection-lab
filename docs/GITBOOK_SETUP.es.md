@@ -59,4 +59,4 @@ Playbooks esperados:
 3. Abre `AUTH-003 Successful logon after repeated failures`.
 4. Enseña las preguntas de triaje, decision y tuning.
 5. Vuelve a Validation para explicar la evidencia sintetica.
-6. Termina en Portfolio presentation para enmarcar alcance y limitaciones.
+6. Termina en Reviewer guide para enmarcar alcance y limitaciones.

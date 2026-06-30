@@ -112,7 +112,7 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("validate", help="validate Sigma rules and synthetic fixtures")
     convert_parser = subparsers.add_parser("convert", help="convert rules to a reviewed backend")
     convert_parser.add_argument("--backend", default="splunk", choices=("splunk",))
-    subparsers.add_parser("report", help="build bilingual portfolio reports")
+    subparsers.add_parser("report", help="build bilingual validation reports")
     demo_parser = subparsers.add_parser("demo", help="build the local interactive demo")
     demo_parser.add_argument("--open", action="store_true", help="open the demo in a browser")
     subparsers.add_parser("vm-check", help="inspect VM readiness without changing the host")

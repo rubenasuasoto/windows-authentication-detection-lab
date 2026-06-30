@@ -25,7 +25,7 @@ structure:
 
 ## Setup Steps
 
-1. Create a GitBook space for the portfolio documentation.
+1. Create a GitBook space for the reviewer documentation.
 2. Open the space configuration and enable GitHub Sync.
 3. Install or authorize the GitBook GitHub app for this repository.
 4. Select repository `rubenasuasoto/windows-authentication-detection-lab` and
@@ -49,7 +49,7 @@ Expected playbook pages:
   credentials, tokens, binaries or memory dumps.
 - Keep GitBook connected to the repository docs instead of editing duplicate
   copies manually.
-- Keep the synthetic lab notice visible in the overview and portfolio guide.
+- Keep the synthetic lab notice visible in the overview and reviewer guide.
 - Keep the public GitBook URL in `README.md` only while the space remains live
   and manually verified.
 

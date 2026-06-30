@@ -17,7 +17,7 @@ GitBook while the source of truth stays in this GitHub repository.
 - Review the five detections in [Detection catalog](DETECTION_CATALOG.md).
 - Walk through analyst response steps in [Playbooks](playbooks/README.md).
 - Check validation results in [Validation](VALIDATION.md).
-- Use [Portfolio presentation](PORTFOLIO_PRESENTATION.md) for a short reviewer
+- Use [Reviewer guide](REVIEWER_GUIDE.md) for a short reviewer
   walkthrough.
 
 ## Reviewer Flow

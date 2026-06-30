@@ -1,7 +1,7 @@
-# Portfolio presentation guide
+# Reviewer guide
 
-Use this page as a concise speaking guide for GitHub, LinkedIn or interviews.
-It explains what the project proves without overstating operational coverage.
+Use this page as a concise guide for technical reviewers. It explains what the
+project demonstrates without overstating operational coverage.
 
 ## One-minute summary
 
@@ -35,7 +35,7 @@ conversion, an interactive local demo, reports and safety checks.
 5. Open `reports/latest/report.en.html` separately to show the full matrix and
    limitations.
 
-## Interview talking points
+## Technical review talking points
 
 - I separated detection intent from validation evidence so each rule has a
   clear expected outcome.
@@ -53,7 +53,7 @@ conversion, an interactive local demo, reports and safety checks.
 - I kept the lab safe for publication: no EVTX files, credentials, binaries,
   memory access, production paths or offensive simulations.
 
-## Resume bullets
+## Project summary bullets
 
 - Built a defensive Windows authentication detection lab with five Sigma rules,
   synthetic validation fixtures, a local mini-SOC demo, Splunk conversion and

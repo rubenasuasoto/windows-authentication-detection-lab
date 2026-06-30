@@ -2,7 +2,7 @@
 
 [English version](README.md)
 
-Proyecto de portafolio seguro y reproducible con cinco detecciones Sigma sobre
+Laboratorio defensivo seguro y reproducible con cinco detecciones Sigma sobre
 anomalías de autenticación de Windows. El laboratorio valida la estructura de
 las reglas, ejecuta escenarios sintéticos, convierte las reglas compatibles a
 Splunk SPL y publica un informe bilingüe.
@@ -115,9 +115,8 @@ incluye herramientas ofensivas ni datos de producción.
 
 ## Presentación
 
-La guía [Portfolio presentation guide](docs/PORTFOLIO_PRESENTATION.md) resume
-cómo enseñar el proyecto en GitHub, LinkedIn o entrevistas sin exagerar su
-alcance operativo.
+La guía [Reviewer guide](docs/REVIEWER_GUIDE.md) resume cómo enseñar el
+proyecto en una revisión técnica sin exagerar su alcance operativo.
 
 ## Release
 

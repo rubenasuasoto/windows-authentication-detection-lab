@@ -4,7 +4,7 @@
 
 [Versión en español](README.es.md)
 
-A safe, reproducible detection-engineering portfolio project built around five
+A safe, reproducible defensive detection-engineering lab built around five
 Sigma detections for Windows authentication anomalies. The lab validates rule
 structure, exercises synthetic scenarios, converts supported rules to Splunk
 SPL, and publishes a bilingual validation report.
@@ -76,7 +76,7 @@ intentionally ignored by Git.
 3. Inspect `tests/fixtures/scenarios.json` to see the positive, negative,
    boundary and tuning cases.
 4. Run `uv run authlab all` to rebuild validation, SPL conversion and reports.
-5. Open `reports/latest/report.en.html` for the portfolio-ready validation
+5. Open `reports/latest/report.en.html` for the reviewer-ready validation
    matrix.
 6. Read the per-rule playbooks in `docs/playbooks/`.
 7. Review `docs/ALERT_NARRATIVES.md` for analyst-facing alert summaries.
@@ -123,7 +123,7 @@ in an authorized target environment before operational use.
 - [Per-rule playbooks](docs/playbooks/)
 - [Validation and tuning](docs/VALIDATION.md)
 - [Tuning guide](docs/TUNING_GUIDE.md)
-- [Portfolio presentation guide](docs/PORTFOLIO_PRESENTATION.md)
+- [Reviewer guide](docs/REVIEWER_GUIDE.md)
 - [Release checklist](docs/RELEASE_CHECKLIST.md)
 - [Optional isolated VM lab](docs/VM_LAB.md)
 - [VM readiness checklist](docs/VM_READINESS_CHECKLIST.md)

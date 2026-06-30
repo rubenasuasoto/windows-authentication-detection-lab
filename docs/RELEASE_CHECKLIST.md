@@ -1,7 +1,7 @@
 # Release checklist v0.1.0
 
 Use this checklist before publishing the first GitHub release. It keeps the
-portfolio scope explicit and avoids claims beyond the synthetic lab.
+public release scope explicit and avoids claims beyond the synthetic lab.
 
 ## Final local validation
 
@@ -14,7 +14,7 @@ portfolio scope explicit and avoids claims beyond the synthetic lab.
 - [ ] Run `uv run detect-secrets-hook --baseline .secrets.baseline $(git ls-files)`.
 - [ ] Run `uv run pip-audit --skip-editable`.
 
-## Portfolio safety review
+## Public release safety review
 
 - [ ] Confirm all examples use synthetic JSON events.
 - [ ] Confirm `reports/latest/demo.html` is static and self-contained: no
@@ -58,10 +58,10 @@ v0.1.0 - Windows Authentication Detection Lab
 - Synthetic fixture validation with positive, negative, boundary and tuning cases.
 - Interactive local mini-SOC demo for guided scenario review.
 - Reviewed Splunk conversion outputs for supported detections.
-- Bilingual portfolio reports and analyst-facing playbooks.
+- Bilingual validation reports and analyst-facing playbooks.
 - Read-only VM readiness and planning commands for optional isolated validation.
 
-Scope: defensive portfolio lab using synthetic data. No production logs,
+Scope: defensive lab using synthetic data. No production logs,
 credentials, malware, offensive simulations or host-changing automation are
 included.
 ```

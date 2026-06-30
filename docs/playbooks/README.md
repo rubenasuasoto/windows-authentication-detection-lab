@@ -1,7 +1,7 @@
 # Playbooks
 
 These playbooks translate each synthetic detection into a short analyst workflow.
-They are written for portfolio review and local lab validation, not for direct
+They are written for technical review and local lab validation, not for direct
 production operation.
 
 > Synthetic lab only. No production logs, credentials, malware, offensive

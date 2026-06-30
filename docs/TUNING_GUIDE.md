@@ -70,7 +70,7 @@ After tuning:
 
 - Re-run `uv run authlab validate`.
 - Confirm positive, negative and boundary fixtures still pass.
-- Add or update a `tune` fixture if the scenario is useful for the portfolio.
+- Add or update a `tune` fixture if the scenario is useful for technical review.
 - Update `reports/latest/` with `uv run authlab report`.
 
 ## Public repository boundary
